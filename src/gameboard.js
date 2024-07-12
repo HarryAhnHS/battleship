@@ -22,5 +22,16 @@ export default class Gameboard {
         }
     }
 
+    receiveAttack(coord) {
+        // Register attack only if valid
+        if (!this.attacks.includes(coord) && coord >= 0 && coord <= 99) {
+            this.attacks.push(coord);
+            if (this.grids[coord]) {
+                // Ship hit - register hit to corresponding ship object
+                this.grids[coord].hit();
+            }
+        }
+    }
+
 
 }
