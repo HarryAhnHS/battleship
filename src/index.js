@@ -5,4 +5,4 @@ import UI from './ui'
 
 document.getElementById("github").src = Git; // Fill github logo
 
-UI.displayGrids();
+UI.initGame();

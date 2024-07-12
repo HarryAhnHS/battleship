@@ -24,6 +24,7 @@ const UI = (() => {
     }
 
     function initGame() {
+        displayGrids();
         let player = new Player;
         let computer = new Player;
 
@@ -32,13 +33,25 @@ const UI = (() => {
         player.gameboard.placeShip(new Ship(3), [1,2,3]);
         computer.gameboard.placeShip(new Ship(3), [21,31,41]);
 
+        displayShips(player);
+
         gameLogic(player, computer);
     }
 
+    function displayShips(player) {
+        const playerGrids = document.querySelectorAll(".gameboard.p > .grid-unit");
+        playerGrids.forEach((grid) => {
+            if (player.gameboard.grids[grid.id]) {
+                grid.classList.add("grid-ship");
+            }
+        });
+    }
+
     function gameLogic(player, computer) {
-        const grids = document.querySelectorAll(".gameboard.c > grid-units");
+        const grids = document.querySelectorAll(".gameboard.c > grid-unit");
         grids.forEach((grid) => {
             grid.onclick(() => {
+                playRound(player, computer, grid.id);
             })
         })
     }
@@ -50,14 +63,18 @@ const UI = (() => {
         // Computer Attack Random move
         // Update Grid Display
         // Check if winner
+        playerAttack(computer, input);
+        updateComputerDisplay(computer);
+        if (computer.gameboard.isGameOver()) return "Player wins";
+
+        AIAttack(player);
+        updatePlayerDisplay(player);
+        if (player.gameboard.isGameOver()) return "Computer wins";
+    }
+
+    function playerAttack(computer, input) {
         if (!computer.gameboard.attacks.includes(input)) {
             computer.gameboard.receiveAttack(input);
-            updateComputerDisplay(computer);
-            if (computer.gameboard.isGameOver()) return;
-
-            AIAttack();
-            updatePlayerDisplay(player);
-            if (computer.gameboard.isGameOver()) return;
         }
     }
 
@@ -69,7 +86,7 @@ const UI = (() => {
 
     function updatePlayerDisplay(player) {
         // Update player grids
-        const playerGrids = document.querySelectorAll(".gameboard.p > .grid-units");
+        const playerGrids = document.querySelectorAll(".gameboard.p > .grid-unit");
         let playerMisses = player.gameboard.getMisses();
         playerGrids.forEach((grid) => {
             if (player.gameboard.grids[grid.id] && player.gameboard.attacks.includes[grid.id]) {
@@ -83,7 +100,7 @@ const UI = (() => {
 
     function updateComputerDisplay(computer) {
         // Update player grids
-        const compGrids = document.querySelectorAll(".gameboard.c > .grid-units");
+        const compGrids = document.querySelectorAll(".gameboard.c > .grid-unit");
         let compMisses = computer.gameboard.getMisses();
         compGrids.forEach((grid) => {
             if (computer.gameboard.grids[grid.id] && computer.gameboard.attacks.includes[grid.id]) {
@@ -97,8 +114,7 @@ const UI = (() => {
 
     return {
         displayGrids,
-        initGame,
-
+        initGame
     }
 
 })();

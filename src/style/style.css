@@ -56,6 +56,18 @@ body {
     outline: 0.5px solid lightgrey;
 }
 
+.grid-ship {
+    background-color: black;
+}
+
+.grid-found {
+    background-color: green;
+}
+
+.grid-missed {
+    background-color: red;
+}
+
 .footer {
     font-family: 'Urbanist', sans-serif;
 
