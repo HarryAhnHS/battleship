@@ -51,7 +51,7 @@ const UI = (() => {
     function displayShips(player) {
         const playerGrids = document.querySelectorAll(".gameboard.p > .grid-unit");
         playerGrids.forEach((grid) => {
-            if (player.gameboard.grids[grid.id.slice(1)]) {
+            if (player.gameboard.grids[parseInt(grid.id.slice(1))]) {
                 grid.classList.add("grid-ship");
             }
         });
@@ -60,9 +60,9 @@ const UI = (() => {
     function gameLogic(player, computer) {
         const grids = document.querySelectorAll(".gameboard.c > .grid-unit");
         grids.forEach((grid) => {
-            grid.onclick(() => {
-                console.log("hi");
-                playRound(player, computer, grid.id.slice(1));
+            grid.onclick = (() => {
+                console.log(grid);
+                playRound(player, computer, parseInt(grid.id.slice(1)));
             })
         })
     }
@@ -76,11 +76,12 @@ const UI = (() => {
         // Check if winner
         playerAttack(computer, input);
         updateComputerDisplay(computer);
-        if (computer.gameboard.isGameOver()) return "Player wins";
+        if (computer.gameboard.isGameOver()) console.log("Player wins"); //TODO - Handle game over
+
 
         AIAttack(player);
         updatePlayerDisplay(player);
-        if (player.gameboard.isGameOver()) return "Computer wins";
+        if (player.gameboard.isGameOver()) console.log("Computer wins"); //TODO - Handle game over
     }
 
     function playerAttack(computer, input) {
@@ -99,11 +100,12 @@ const UI = (() => {
         // Update player grids
         const playerGrids = document.querySelectorAll(".gameboard.p > .grid-unit");
         let playerMisses = player.gameboard.getMisses();
+        console.log(playerMisses);
         playerGrids.forEach((grid) => {
-            if (player.gameboard.grids[grid.id.slice(1)] && player.gameboard.attacks.includes[grid.id.slice(1)]) {
+            if (player.gameboard.grids[parseInt(grid.id.slice(1))] && player.gameboard.attacks.includes(parseInt(grid.id.slice(1)))) {
                 grid.classList.add("grid-found");
             }
-            else if (playerMisses.includes(grid.id.slice(1))) {
+            else if (playerMisses.includes(parseInt(grid.id.slice(1)))) {
                 grid.classList.add("grid-missed");
             }
         });
@@ -114,10 +116,10 @@ const UI = (() => {
         const compGrids = document.querySelectorAll(".gameboard.c > .grid-unit");
         let compMisses = computer.gameboard.getMisses();
         compGrids.forEach((grid) => {
-            if (computer.gameboard.grids[grid.id.slice(1)] && computer.gameboard.attacks.includes[grid.id.slice(1)]) {
+            if (computer.gameboard.grids[parseInt(grid.id.slice(1))] && computer.gameboard.attacks.includes(parseInt(grid.id.slice(1)))) {
                 grid.classList.add("grid-found");
             }
-            else if (compMisses.includes(grid.id.slice(1))) {
+            else if (compMisses.includes(parseInt(grid.id.slice(1)))) {
                 grid.classList.add("grid-missed");
             }
         });
