@@ -22,7 +22,7 @@ npm install --save-dev style-loader css-loader
 
 ### CSV/Tabular Date Loader
 ```
-npm install --save-dev csv-loader xml-loader
+npm install --save-dev csv-loader
 ```
 
 ### Eslint (https://eslint.org/docs/latest/use/getting-started)
@@ -40,17 +40,14 @@ npm install prettier -D --save-exact
 npm install -D babel-loader @babel/core @babel/preset-env webpack
 ```
 
-<<<<<<< HEAD
 Jest
 ```npm i --save-dev jest```
 
 Build
 ```npm run build```
-=======
 ### NPM Scripts:
 - ```npm run build```
 - ```npm run start```
->>>>>>> b21c425260ae61d32304865b892fc8bc4e0c6a3e
 
 ### Deploying 'dist' subdirectory to Github Pages (https://gist.github.com/cobyism/4730490)
 ```
