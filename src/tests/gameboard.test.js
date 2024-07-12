@@ -59,6 +59,12 @@ it('Occupied coordinates - ignore place ship in gameboard', () => {
     expect(gb.grids[6]).toEqual(null);
 })
 
+it('Wrong length coordinates - ignore place ship in gameboard', () => {
+    gb.placeShip(vessel, [1]);
+
+    expect(gb.grids[1]).toEqual(null);
+})
+
 it('recieve attack and register', () => {
     gb.placeShip(vessel, [1,2,3,4,5]);
     gb.receiveAttack(0);
@@ -103,6 +109,37 @@ it('detect sink ship', () => {
     expect(vessel.isSunk).toEqual(true);
 })
 
+it('gather missed attacks', () => {
+    gb.placeShip(vessel, [1,2,3,4,5]);
+    gb.receiveAttack(1);
+    gb.receiveAttack(1);
+    gb.receiveAttack(6);
+    gb.receiveAttack(6);
+    gb.receiveAttack(10);
+    gb.receiveAttack(0);
+
+    expect(gb.getMisses().sort()).toEqual([6,10,0].sort());
+})
+
 it('determine if all ships sunk', () => {
-    
+    gb.placeShip(vessel, [1,2,3,4,5]);
+    gb.receiveAttack(1);
+    gb.receiveAttack(2);
+    gb.receiveAttack(3);
+    gb.receiveAttack(4);
+    gb.receiveAttack(5);
+
+    expect(gb.isGameOver()).toBe(true);
+})
+
+it('determine if all ships sunk', () => {
+    gb.placeShip(vessel, [1,2,3,4,5]);
+    gb.placeShip(boat, [6,7]);
+    gb.receiveAttack(1);
+    gb.receiveAttack(2);
+    gb.receiveAttack(3);
+    gb.receiveAttack(4);
+    gb.receiveAttack(5);
+
+    expect(gb.isGameOver()).toBe(false);
 })
