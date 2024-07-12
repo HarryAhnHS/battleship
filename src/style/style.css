@@ -1,0 +1,39 @@
+/* Font */
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+
+img {
+    max-width: 100%;
+}
+
+.footer {
+    font-family: 'Urbanist', sans-serif;
+
+    background-color: white;
+    color: black;
+    height: 100px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 12px;
+}
+
+.github-logo {
+    margin-left: 10px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.github-a img{
+    opacity: 0.5;
+    transition: all 300ms;
+}
+
+.github-a img:hover {
+    opacity: 1;
+    transform: rotate(360deg) scale(1.1);
+}
