@@ -1,4 +1,5 @@
 import './style/style.css';
-import Git from './images/github.png';
+import Git from './assets/github.png';
 
 document.getElementById("github").src = Git; // Fill github logo
+
