@@ -45,6 +45,14 @@ export default class Gameboard {
         return misses;
     }
 
+    getRemaining() {
+        let remaining = [];
+        for (let i = 0; i < 100; i++) {
+            if (this.grids[i] == null) remaining.push(i);
+        }
+        return remaining;
+    }
+
     isGameOver() {
         let gameover = true;
         this.ships.forEach((ship) => {
