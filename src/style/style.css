@@ -5,6 +5,57 @@ img {
     max-width: 100%;
 }
 
+body {
+    height: calc(100vh + 100px);
+    display: flex;
+    flex-direction: column;
+
+    margin: 0;
+}
+
+.header {
+    height: 120px;
+    
+    font-size: 32px;
+    margin-top: 5px;
+
+    display: flex;
+    justify-content: center;
+}
+
+.main {
+    flex: 1;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.player, .computer {
+    height: 100%;
+    width: 46%;
+    outline: 1px solid black;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gameboard {
+    height: 420px;
+    width: 420px;
+
+    outline: 1px solid black;
+
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.grid-unit {
+    outline: 0.5px solid lightgrey;
+}
+
 .footer {
     font-family: 'Urbanist', sans-serif;
 
