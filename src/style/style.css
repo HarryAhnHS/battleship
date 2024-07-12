@@ -52,6 +52,11 @@ body {
     flex-wrap: wrap;
 }
 
+.gameboard.c > .grid-unit:hover, 
+.gameboard.c > .grid-unit:focus {
+    cursor: pointer;
+} 
+
 .grid-unit {
     outline: 0.5px solid lightgrey;
 }

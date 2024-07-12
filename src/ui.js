@@ -5,22 +5,32 @@ import { pl } from "date-fns/locale";
 
 const UI = (() => {
     function displayGrids() {
-        let gameboards = document.querySelectorAll(".gameboard");
-        gameboards.forEach((gameboard) => {
-            gameboard.innerHTML = ""; // Clear existing
+        let gameboardP = document.querySelector(".gameboard.p");
+        gameboardP.innerHTML = ""; // Clear existing
+        for (let i = 0; i < 100; i++) {
+            const gridUnit = document.createElement('div');
+            gridUnit.classList.add('grid-unit');
+            gridUnit.id = `p${i}`; // assign each an id from 0 to n*n-1
     
-            // Add n*n grids into container, assign each an id from 0 to n*n-1
-            for (let i = 0; i < 100; i++) {
-                const gridUnit = document.createElement('div');
-                gridUnit.classList.add('grid-unit');
-                gridUnit.id = i; // assign each an id from 0 to n*n-1
-        
-                gridUnit.style.width = `10%`;
-                gridUnit.style.height = `10%`;
-                
-                gameboard.appendChild(gridUnit);
-            };
-        })
+            gridUnit.style.width = `10%`;
+            gridUnit.style.height = `10%`;
+    
+            gameboardP.appendChild(gridUnit);
+        };
+
+        let gameboardC = document.querySelector(".gameboard.c");
+        gameboardC.innerHTML = ""; // Clear existing
+        for (let i = 0; i < 100; i++) {
+            const gridUnit = document.createElement('div');
+            gridUnit.classList.add('grid-unit');
+            gridUnit.id = `c${i}`; // assign each an id from 0 to n*n-1
+    
+            gridUnit.style.width = `10%`;
+            gridUnit.style.height = `10%`;
+    
+            gameboardC.appendChild(gridUnit);
+        };
+
     }
 
     function initGame() {
@@ -41,17 +51,18 @@ const UI = (() => {
     function displayShips(player) {
         const playerGrids = document.querySelectorAll(".gameboard.p > .grid-unit");
         playerGrids.forEach((grid) => {
-            if (player.gameboard.grids[grid.id]) {
+            if (player.gameboard.grids[grid.id.slice(1)]) {
                 grid.classList.add("grid-ship");
             }
         });
     }
 
     function gameLogic(player, computer) {
-        const grids = document.querySelectorAll(".gameboard.c > grid-unit");
+        const grids = document.querySelectorAll(".gameboard.c > .grid-unit");
         grids.forEach((grid) => {
             grid.onclick(() => {
-                playRound(player, computer, grid.id);
+                console.log("hi");
+                playRound(player, computer, grid.id.slice(1));
             })
         })
     }
@@ -89,10 +100,10 @@ const UI = (() => {
         const playerGrids = document.querySelectorAll(".gameboard.p > .grid-unit");
         let playerMisses = player.gameboard.getMisses();
         playerGrids.forEach((grid) => {
-            if (player.gameboard.grids[grid.id] && player.gameboard.attacks.includes[grid.id]) {
+            if (player.gameboard.grids[grid.id.slice(1)] && player.gameboard.attacks.includes[grid.id.slice(1)]) {
                 grid.classList.add("grid-found");
             }
-            else if (playerMisses.includes(grid.id)) {
+            else if (playerMisses.includes(grid.id.slice(1))) {
                 grid.classList.add("grid-missed");
             }
         });
@@ -103,10 +114,10 @@ const UI = (() => {
         const compGrids = document.querySelectorAll(".gameboard.c > .grid-unit");
         let compMisses = computer.gameboard.getMisses();
         compGrids.forEach((grid) => {
-            if (computer.gameboard.grids[grid.id] && computer.gameboard.attacks.includes[grid.id]) {
+            if (computer.gameboard.grids[grid.id.slice(1)] && computer.gameboard.attacks.includes[grid.id.slice(1)]) {
                 grid.classList.add("grid-found");
             }
-            else if (compMisses.includes(grid.id)) {
+            else if (compMisses.includes(grid.id.slice(1))) {
                 grid.classList.add("grid-missed");
             }
         });
