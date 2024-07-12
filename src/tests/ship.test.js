@@ -16,9 +16,7 @@ it('Check if ship not sunk', () => {
     a.hit();
     a.hit();
     a.hit();
-
-    a.checkIsSunk();
-
+    
     expect(a.isSunk).toBe(false);
 })
 
@@ -28,8 +26,6 @@ it('Check if ship sunk', () => {
     a.hit();
     a.hit();
     a.hit();
-
-    a.checkIsSunk();
 
     expect(a.isSunk).toBe(true);
 })

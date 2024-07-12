@@ -3,7 +3,7 @@ import Ship from './ship'
 export default class Gameboard {
     constructor() {
         this.grids = new Array(100).fill(null); // 2D array illustrated by 1D (10x10)
-        this.shot = [];
+        this.attacks = [];
     }
 
     placeShip(ship, coords) {
@@ -21,4 +21,6 @@ export default class Gameboard {
             })
         }
     }
+
+
 }

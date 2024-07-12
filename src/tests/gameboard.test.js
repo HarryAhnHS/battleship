@@ -59,8 +59,48 @@ it('Occupied coordinates - ignore place ship in gameboard', () => {
     expect(gb.grids[6]).toEqual(null);
 })
 
-it('recieve attack and determine hit or miss', () => {
-    
+it('recieve attack and register', () => {
+    gb.placeShip(vessel, [1,2,3,4,5]);
+    gb.receiveAttack(0);
+
+    expect(gb.attacks).toContain(0);
+})
+
+it('recieve attack and determine hit', () => {
+    gb.placeShip(vessel, [1,2,3,4,5]);
+    gb.receiveAttack(1);
+
+    expect(vessel.hits).toEqual(1);
+})
+
+it('recieve duplicate attack and ignore', () => {
+    gb.placeShip(vessel, [1,2,3,4,5]);
+    gb.receiveAttack(1);
+    gb.receiveAttack(1);
+
+    expect(vessel.hits).toEqual(1);
+})
+
+it('recieve multiple attacks', () => {
+    gb.placeShip(vessel, [1,2,3,4,5]);
+    gb.receiveAttack(1);
+    gb.receiveAttack(1);
+    gb.receiveAttack(2);
+    gb.receiveAttack(3);
+
+    expect(vessel.hits).toEqual(3);
+})
+
+it('detect sink ship', () => {
+    gb.placeShip(vessel, [1,2,3,4,5]);
+    gb.receiveAttack(1);
+    gb.receiveAttack(1);
+    gb.receiveAttack(2);
+    gb.receiveAttack(3);
+    gb.receiveAttack(4);
+    gb.receiveAttack(5);
+
+    expect(vessel.isSunk).toEqual(true);
 })
 
 it('determine if all ships sunk', () => {
