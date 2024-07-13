@@ -41,11 +41,9 @@ const UI = (() => {
         // TODO Select Ship Location - random for computer
         // playerShipSelect(player);
         // computerShipSelect(computer);
-
+        placeRandomShips(player);
         placeRandomShips(computer);
         // Sample for now
-        // player.gameboard.placeShip(new Ship(3), [1,2,3]);
-        // computer.gameboard.placeShip(new Ship(3), [21,31,41]);
 
         displayShips(player);
 
@@ -78,13 +76,13 @@ const UI = (() => {
 
         inventory.forEach((ship) => {
             let coords = randomCoordinates(ship);
-            // Error check until valid - then place
-            while (!player.gameboard.placeShip(ship, coords)) {
+            // Error check cycle until valid - then place
+            while (!player.gameboard.isValidPlacement(ship, coords)) {
                 coords = randomCoordinates(ship);
+                console.log("Invalid randomization - Cycling")
             }
+            player.gameboard.placeShip(ship, coords);
         })
-
-
         console.log(player);
     }
 
