@@ -76,12 +76,12 @@ const UI = (() => {
         // Check if winner
         playerAttack(computer, input);
         updateComputerDisplay(computer);
-        if (computer.gameboard.isGameOver()) console.log("Player wins"); //TODO - Handle game over
+        if (computer.gameboard.isGameOver()) gameOver("Player");
 
 
         AIAttack(player);
         updatePlayerDisplay(player);
-        if (player.gameboard.isGameOver()) console.log("Computer wins"); //TODO - Handle game over
+        if (player.gameboard.isGameOver()) gameOver("Computer");; //TODO - Handle game over
     }
 
     function playerAttack(computer, input) {
@@ -123,6 +123,36 @@ const UI = (() => {
                 grid.classList.add("grid-missed");
             }
         });
+    }
+
+    // Helper function to delay
+    function delay(ms) {    
+        return new Promise((res, rej) => {
+            setTimeout(res, ms)
+        });
+    }
+
+    async function gameOver(winner) {
+        const dialog = document.querySelector(".result");
+        const text = document.querySelector(".result-text");
+        const restart = document.querySelector(".restart");
+        const gameboard = document.querySelector(".gameboard.c");
+
+        gameboard.style['pointer-events'] = 'none'; //Disable gameboard interface while awaiting
+        await delay(1000);
+
+
+        dialog.showModal();
+        dialog.classList.add(".result-displayed");
+        text.textContent = `${winner} wins!`
+
+        restart.onclick = () => {
+            // Restart game
+            dialog.close();
+            dialog.classList.remove(".result-displayed");
+            initGame();
+            gameboard.style['pointer-events'] = 'auto'; //Enable gameboard interface
+        }
     }
 
     return {
