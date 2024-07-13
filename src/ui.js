@@ -99,8 +99,9 @@ const UI = (() => {
         const grids = document.querySelectorAll(".gameboard.c > .grid-unit");
         grids.forEach((grid) => {
             grid.onclick = (() => {
-                console.log(grid);
-                playRound(player, computer, parseInt(grid.id.slice(1)));
+                if (!computer.gameboard.attacks.includes(parseInt(grid.id.slice(1)))) {
+                    playRound(player, computer, parseInt(grid.id.slice(1)));
+                }
             })
         })
     }
