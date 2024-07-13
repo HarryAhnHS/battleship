@@ -23,7 +23,7 @@ export default class Gameboard {
             coords.forEach((idx) => {
                 this.grids[idx] = ship;
             })
-            this.ships.push(ship);
+            this.ships.push({ship, coords});
         }
     }
 
@@ -58,8 +58,8 @@ export default class Gameboard {
 
     isGameOver() {
         let gameover = true;
-        this.ships.forEach((ship) => {
-            if (!ship.isSunk) gameover = false;
+        this.ships.forEach((shipObj) => {
+            if (!shipObj.ship.isSunk) gameover = false;
         })
         return gameover;
     }

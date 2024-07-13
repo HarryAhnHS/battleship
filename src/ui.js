@@ -45,6 +45,7 @@ const UI = (() => {
         placeRandomShips(computer);
         // Sample for now
 
+        bundleShips(player, computer);
         displayShips(player);
 
         gameLogic(player, computer);
@@ -55,7 +56,6 @@ const UI = (() => {
     }
 
     // Helper function - Return array of random coordinate placement based on ship's length
-    // No error checking
     function randomCoordinates(ship) {
         let pos = Math.floor(Math.random() * 100);
         let axis = Math.floor(Math.random( )* 2) // 0 is horizantal, 1 is vertical
@@ -72,9 +72,9 @@ const UI = (() => {
     }
 
     function placeRandomShips(player) {
-        let inventory = [new Ship(2), new Ship(3), new Ship(3), new Ship(4), new Ship(5)];
+        let fleet = [new Ship(2), new Ship(3), new Ship(3), new Ship(4), new Ship(5)];
 
-        inventory.forEach((ship) => {
+        fleet.forEach((ship) => {
             let coords = randomCoordinates(ship);
             // Error check cycle until valid - then place
             while (!player.gameboard.isValidPlacement(ship, coords)) {
@@ -93,6 +93,17 @@ const UI = (() => {
                 grid.classList.add("grid-ship");
             }
         });
+    }
+
+    function bundleShips(player, computer) {
+        const playerGrids = document.querySelectorAll(".gameboard.p > .grid-unit");
+        // Mark each ship with class to distinguish
+        player.gameboard.ships.forEach((shipObj) => {
+            let i = 1;
+            shipObj.coords.forEach((coord) => {
+                document.querySelector(`.gameboard.p > #p${coord}`).classList.add(`ship-${i++}`);
+            })
+        })
     }
 
     function gameLogic(player, computer) {
