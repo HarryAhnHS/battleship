@@ -39,6 +39,10 @@ const UI = (() => {
         let computer = new Player;
 
         // TODO Select Ship Location - random for computer
+        // playerShipSelect(player);
+        // computerShipSelect(computer);
+
+        placeRandomShips();
         // Sample for now
         player.gameboard.placeShip(new Ship(3), [1,2,3]);
         computer.gameboard.placeShip(new Ship(3), [21,31,41]);
@@ -46,6 +50,36 @@ const UI = (() => {
         displayShips(player);
 
         gameLogic(player, computer);
+    }
+
+    function playerShipSelect(player) {
+
+    }
+
+    // Helper function - Return array of random coordinate placement based on ship's length
+    // No error checking
+    function randomCoordinates(ship) {
+        let pos = Math.floor(Math.random() * 100);
+        let axis = Math.floor(Math.random( )* 2) // 0 is horizantal, 1 is vertical
+        let coords = [...new Array(ship.length).keys()];
+        if (axis == 0) {
+            // Horizantal
+            coords = coords.map((x) => x + pos);
+        }
+        else if (axis == 1) {
+            // Vertical
+            coords = coords.map((x) => pos + (10 * x));
+        }
+        return coords;
+    }
+
+    function placeRandomShips(player) {
+        let inventory = [new Ship(2), new Ship(3), new Ship(3), new Ship(4), new Ship(5)];
+
+        inventory.forEach((ship) => {
+            let coords = randomCoordinates(ship);
+            console.log(coords);
+        })
     }
 
     function displayShips(player) {
@@ -76,12 +110,11 @@ const UI = (() => {
         // Check if winner
         playerAttack(computer, input);
         updateComputerDisplay(computer);
-        if (computer.gameboard.isGameOver()) gameOver("Player");
-
+        if (computer.gameboard.isGameOver()) gameOver("Player", player);
 
         AIAttack(player);
         updatePlayerDisplay(player);
-        if (player.gameboard.isGameOver()) gameOver("Computer");; //TODO - Handle game over
+        if (player.gameboard.isGameOver()) gameOver("Computer", computer);; //TODO - Handle game over
     }
 
     function playerAttack(computer, input) {
@@ -132,19 +165,21 @@ const UI = (() => {
         });
     }
 
-    async function gameOver(winner) {
+    async function gameOver(winnerText, winner) {
         const dialog = document.querySelector(".result");
         const text = document.querySelector(".result-text");
         const restart = document.querySelector(".restart");
         const gameboard = document.querySelector(".gameboard.c");
 
+
+        // TODO - create game over styling transition in winning player grid
         gameboard.style['pointer-events'] = 'none'; //Disable gameboard interface while awaiting
         await delay(1000);
 
 
         dialog.showModal();
         dialog.classList.add(".result-displayed");
-        text.textContent = `${winner} wins!`
+        text.textContent = `${winnerText} wins!`
 
         restart.onclick = () => {
             // Restart game

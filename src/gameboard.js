@@ -13,6 +13,7 @@ export default class Gameboard {
             if (this.grids[idx] != null || coords.length != ship.length || idx < 0 || idx > 99) {
                 // Bounds check placement idx and if not empty
                 isValid = false;
+                return false; 
             }
         })
 
@@ -22,6 +23,7 @@ export default class Gameboard {
             })
             this.ships.push(ship);
         }
+        return true;
     }
 
     receiveAttack(coord) {
