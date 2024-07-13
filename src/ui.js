@@ -61,11 +61,17 @@ const UI = (() => {
         let axis = Math.floor(Math.random( )* 2) // 0 is horizantal, 1 is vertical
         let coords = [...new Array(ship.length).keys()]; // Start with coord array of [0...n]
         if (axis == 0) {
-            // Horizantal
+            // Horizontal
             coords = coords.map((x) => x + pos);
+            // Error check + Cycle until valid - must all have same x//10 value to be in same y-axis
+            while (!coords.every((x) => Math.floor(x/10) == Math.floor(coords[0]/10))) {
+                let pos = Math.floor(Math.random() * 100);
+                coords = coords.map((x) => x + pos);
+                console.log("Horizontal zigzag - Cycling")
+            }
         }
         else if (axis == 1) {
-            // Vertical
+            // Vertical - must all have same x%10 value to be in same x-axis
             coords = coords.map((x) => pos + (10 * x));
         }
         return coords;
