@@ -45,8 +45,7 @@ const UI = (() => {
         placeRandomShips(computer);
         // Sample for now
 
-        bundleShips(player, computer);
-        displayShips(player);
+        displayShips(player,computer);
 
         gameLogic(player, computer);
     }
@@ -92,23 +91,27 @@ const UI = (() => {
         console.log(player);
     }
 
-    function displayShips(player) {
-        const playerGrids = document.querySelectorAll(".gameboard.p > .grid-unit");
-        playerGrids.forEach((grid) => {
-            if (player.gameboard.grids[parseInt(grid.id.slice(1))]) {
-                grid.classList.add("grid-ship");
-            }
-        });
-    }
-
-    function bundleShips(player, computer) {
-        const playerGrids = document.querySelectorAll(".gameboard.p > .grid-unit");
+    function displayShips(player, computer) {
         // Mark each ship with class to distinguish
+        let i = 1;
+        let j = 1;
         player.gameboard.ships.forEach((shipObj) => {
-            let i = 1;
             shipObj.coords.forEach((coord) => {
-                document.querySelector(`.gameboard.p > #p${coord}`).classList.add(`ship-${i++}`);
+                document.querySelector(`.gameboard.p > #p${coord}`).classList.add(`ship-${i}`);
+                document.querySelector(`.gameboard.p > #p${coord}`).classList.add("grid-ship");
             })
+            i++;
+        })
+
+        // Mark each ship with class to distinguish
+        computer.gameboard.ships.forEach((shipObj) => {
+            shipObj.coords.forEach((coord) => {
+                document.querySelector(`.gameboard.c > #c${coord}`).classList.add(`ship-${j}`);
+                if (shipObj.ship.isFound) {
+                    document.querySelector(`.gameboard.c > #c${coord}`).classList.add("grid-ship");
+                }
+            })
+            j++;
         })
     }
 
