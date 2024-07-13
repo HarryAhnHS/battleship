@@ -38,12 +38,9 @@ const UI = (() => {
         let player = new Player;
         let computer = new Player;
 
-        // TODO Select Ship Location - random for computer
-        // playerShipSelect(player);
-        // computerShipSelect(computer);
         placeRandomShips(player);
         placeRandomShips(computer);
-        // Sample for now
+        // TODO - drag+drop select playerShipSelect(player);
 
         displayShips(player,computer);
 
@@ -122,7 +119,7 @@ const UI = (() => {
         // Update player grids
         let playerAttacks = player.gameboard.attacks;
         playerAttacks.forEach((idx) => {
-            if (player.gameboard.grid[idx]) {
+            if (player.gameboard.grids[idx]) {
                 document.querySelector(`#p${idx}`).classList.add("grid-found");
             }
             else {
@@ -133,7 +130,7 @@ const UI = (() => {
         // Update computer grids
         let compAttacks = computer.gameboard.attacks;
         compAttacks.forEach((idx) => {
-            if (compAttacks.gameboard.grid[idx]) {
+            if (computer.gameboard.grids[idx]) {
                 document.querySelector(`#c${idx}`).classList.add("grid-found");
             }
             else {
@@ -178,13 +175,13 @@ const UI = (() => {
         // Update Grid Display
         // Check if winner
         playerAttack(computer, input);
-        updateGrids();
-        updateShips();
+        updateGrids(player, computer);
+        updateShips(player, computer);
         if (computer.gameboard.isGameOver()) gameOver("Player", player);
 
         AIAttack(player);
-        updateGrids();
-        updateShips();
+        updateGrids(player, computer);
+        updateShips(player, computer);
         if (player.gameboard.isGameOver()) gameOver("Computer", computer);; //TODO - Handle game over
     }
 
