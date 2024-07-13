@@ -61,7 +61,7 @@ body {
     outline: 0.5px solid lightgrey;
 }
 
-.grid-ship {
+.player-ship {
     background-color: black;
 }
 
@@ -71,6 +71,10 @@ body {
 
 .grid-missed {
     background-color: red;
+}
+
+.grid-sunk {
+    background-color: blue;
 }
 
 /* results modal styling */

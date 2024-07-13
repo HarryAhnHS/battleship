@@ -98,7 +98,10 @@ const UI = (() => {
         player.gameboard.ships.forEach((shipObj) => {
             shipObj.coords.forEach((coord) => {
                 document.querySelector(`.gameboard.p > #p${coord}`).classList.add(`ship-${i}`);
-                document.querySelector(`.gameboard.p > #p${coord}`).classList.add("grid-ship");
+                document.querySelector(`.gameboard.p > #p${coord}`).classList.add("player-ship");
+                if (shipObj.ship.isSunk) {
+                    document.querySelector(`.gameboard.c > #c${coord}`).classList.add("grid-sunk");
+                }
             })
             i++;
         })
@@ -107,11 +110,52 @@ const UI = (() => {
         computer.gameboard.ships.forEach((shipObj) => {
             shipObj.coords.forEach((coord) => {
                 document.querySelector(`.gameboard.c > #c${coord}`).classList.add(`ship-${j}`);
-                if (shipObj.ship.isFound) {
-                    document.querySelector(`.gameboard.c > #c${coord}`).classList.add("grid-ship");
+                if (shipObj.ship.isSunk) {
+                    document.querySelector(`.gameboard.c > #c${coord}`).classList.add("grid-sunk");
                 }
             })
             j++;
+        })
+    }
+
+    function updateGrids(player, computer) {
+        // Update player grids
+        let playerAttacks = player.gameboard.attacks;
+        playerAttacks.forEach((idx) => {
+            if (player.gameboard.grid[idx]) {
+                document.querySelector(`#p${idx}`).classList.add("grid-found");
+            }
+            else {
+                document.querySelector(`#p${idx}`).classList.add("grid-missed");
+            }
+        })
+
+        // Update computer grids
+        let compAttacks = computer.gameboard.attacks;
+        compAttacks.forEach((idx) => {
+            if (compAttacks.gameboard.grid[idx]) {
+                document.querySelector(`#c${idx}`).classList.add("grid-found");
+            }
+            else {
+                document.querySelector(`#c${idx}`).classList.add("grid-missed");
+            }
+        })
+    }
+
+    function updateShips(player, computer) {
+        player.gameboard.ships.forEach((shipObj) => {
+            shipObj.coords.forEach((coord) => {
+                if (shipObj.ship.isSunk) {
+                    document.querySelector(`.gameboard.c > #c${coord}`).classList.add("grid-sunk");
+                }
+            })
+        })
+        computer.gameboard.ships.forEach((shipObj) => {
+            shipObj.coords.forEach((coord) => {
+                if (shipObj.ship.isSunk) {
+                    document.querySelector(`.gameboard.c > #c${coord}`).classList.add("grid-sunk");
+                }
+            })
         })
     }
 
@@ -134,11 +178,13 @@ const UI = (() => {
         // Update Grid Display
         // Check if winner
         playerAttack(computer, input);
-        updateComputerDisplay(computer);
+        updateGrids();
+        updateShips();
         if (computer.gameboard.isGameOver()) gameOver("Player", player);
 
         AIAttack(player);
-        updatePlayerDisplay(player);
+        updateGrids();
+        updateShips();
         if (player.gameboard.isGameOver()) gameOver("Computer", computer);; //TODO - Handle game over
     }
 
@@ -152,35 +198,6 @@ const UI = (() => {
         // Complete Randomization
         let options = player.gameboard.getRemaining();
         player.gameboard.receiveAttack(Math.floor(Math.random() * options.length));
-    }
-
-    function updatePlayerDisplay(player) {
-        // Update player grids
-        const playerGrids = document.querySelectorAll(".gameboard.p > .grid-unit");
-        let playerMisses = player.gameboard.getMisses();
-        console.log(playerMisses);
-        playerGrids.forEach((grid) => {
-            if (player.gameboard.grids[parseInt(grid.id.slice(1))] && player.gameboard.attacks.includes(parseInt(grid.id.slice(1)))) {
-                grid.classList.add("grid-found");
-            }
-            else if (playerMisses.includes(parseInt(grid.id.slice(1)))) {
-                grid.classList.add("grid-missed");
-            }
-        });
-    }
-
-    function updateComputerDisplay(computer) {
-        // Update player grids
-        const compGrids = document.querySelectorAll(".gameboard.c > .grid-unit");
-        let compMisses = computer.gameboard.getMisses();
-        compGrids.forEach((grid) => {
-            if (computer.gameboard.grids[parseInt(grid.id.slice(1))] && computer.gameboard.attacks.includes(parseInt(grid.id.slice(1)))) {
-                grid.classList.add("grid-found");
-            }
-            else if (compMisses.includes(parseInt(grid.id.slice(1)))) {
-                grid.classList.add("grid-missed");
-            }
-        });
     }
 
     // Helper function to delay
