@@ -42,10 +42,10 @@ const UI = (() => {
         // playerShipSelect(player);
         // computerShipSelect(computer);
 
-        placeRandomShips();
+        placeRandomShips(computer);
         // Sample for now
-        player.gameboard.placeShip(new Ship(3), [1,2,3]);
-        computer.gameboard.placeShip(new Ship(3), [21,31,41]);
+        // player.gameboard.placeShip(new Ship(3), [1,2,3]);
+        // computer.gameboard.placeShip(new Ship(3), [21,31,41]);
 
         displayShips(player);
 
@@ -61,7 +61,7 @@ const UI = (() => {
     function randomCoordinates(ship) {
         let pos = Math.floor(Math.random() * 100);
         let axis = Math.floor(Math.random( )* 2) // 0 is horizantal, 1 is vertical
-        let coords = [...new Array(ship.length).keys()];
+        let coords = [...new Array(ship.length).keys()]; // Start with coord array of [0...n]
         if (axis == 0) {
             // Horizantal
             coords = coords.map((x) => x + pos);
@@ -78,8 +78,14 @@ const UI = (() => {
 
         inventory.forEach((ship) => {
             let coords = randomCoordinates(ship);
-            console.log(coords);
+            // Error check until valid - then place
+            while (!player.gameboard.placeShip(ship, coords)) {
+                coords = randomCoordinates(ship);
+            }
         })
+
+
+        console.log(player);
     }
 
     function displayShips(player) {

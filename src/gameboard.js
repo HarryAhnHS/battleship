@@ -7,23 +7,24 @@ export default class Gameboard {
         this.ships = [];
     }
 
-    placeShip(ship, coords) {
+    isValidPlacement(ship, coords) {
         let isValid = true;
         coords.forEach((idx) => {
             if (this.grids[idx] != null || coords.length != ship.length || idx < 0 || idx > 99) {
                 // Bounds check placement idx and if not empty
-                isValid = false;
-                return false; 
+                isValid = false; 
             }
         })
+        return isValid;
+    }
 
-        if (isValid) {
+    placeShip(ship, coords) {
+        if (this.isValidPlacement(ship, coords)) {
             coords.forEach((idx) => {
                 this.grids[idx] = ship;
             })
             this.ships.push(ship);
         }
-        return true;
     }
 
     receiveAttack(coord) {
