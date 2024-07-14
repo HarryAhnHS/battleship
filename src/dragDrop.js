@@ -88,7 +88,7 @@ const DragDrop = (() => {
                 // Find class associated with ship + use as hashmap to reference exact ship object used in gameboard
                 const shipObj = player.gameboard.ships[shipIdx.slice(5)-1].ship;
 
-                setDroppableArea(player, shipObj, 0);
+                setDroppableArea(player, shipObj, shipObj.axis);
                 dragEnter(player);
                 dragEnd(player);
             })

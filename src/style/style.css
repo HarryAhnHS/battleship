@@ -62,7 +62,7 @@ body {
 }
 
 .player-ship {
-    background-color: black;
+    /* background-color: black; */
 }
 
 .grid-found {
@@ -77,8 +77,28 @@ body {
     background-color: blue;
 }
 
-/* Drag drop */
+/* Grid-ship individual styling*/
+.ship-1 {
+    background-color: #d6bbc0;
+}
 
+.ship-2 {
+    background-color: #d0a3bf;
+}
+
+.ship-3 {
+    background-color: #c585b3;
+}
+
+.ship-4 {
+    background-color: #bc69aa;
+}
+
+.ship-5 {
+    background-color: #af42ae;
+}
+
+/* Drag drop */
 .grid-droppable {
     background-color: aliceblue;
 }
