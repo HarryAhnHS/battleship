@@ -4,33 +4,58 @@ import Gameboard from './gameboard'
 import Ship from './ship'
 
 const DragDrop = (() => {
-    function main(player) {
+
+    function drag(player) {
+        reset();
         setDraggableArea();
-        drag(player);
+        dragStart(player);
     }
 
+    // reset all drag event listeners
     function reset() {
-        let playerGrids = document.querySelectorAll(".gameboard.p > .grid-unit");
+        document.querySelectorAll(".gameboard.p > .grid-unit").forEach((grid) => {
+            grid.ondragstart = ((e) => {
+            }) 
+            grid.ondragenter = ((e) => {
+            }) 
+            grid.ondragend = ((e) => {
+            }) 
+        })
+    }
 
+
+    // Reset and set all ships to be draggable 
+    function setDraggableArea() {
         // Reset draggable content
-        playerGrids.forEach((grid) => {
+        document.querySelectorAll(".gameboard.p > .grid-unit").forEach((grid) => {
             grid.setAttribute("draggable", false);
             grid.style['cursor'] = 'auto';
         })
-
-        // Reset droppable grids to have class "grid-droppable"
-        document.querySelectorAll(".gameboard.p > .grid-unit").forEach((grid) => {
-            grid.classList.remove('grid-droppable');
-        })
-    }
-
-    function setDraggableArea() {
-        reset();
         // Draggable content = any grid with ship class
         let playerShips = document.querySelectorAll(".gameboard.p > .player-ship");
         playerShips.forEach((grid) => {
             grid.setAttribute("draggable", true);
             grid.style['cursor'] = 'pointer';
+        })
+    }
+
+    function dragStart(player) {
+        let playerShips = document.querySelectorAll(".gameboard.p > .player-ship");
+
+        playerShips.forEach((grid) => {
+            grid.ondragstart = (e) => {
+                // Dragging ship - need to extract Ship object from the grid
+                const classes = [...grid.classList];
+                let shipIdx = classes.find(value => {
+                    return value.startsWith("ship-");
+                });
+                // Find class associated with ship + use as hashmap to reference exact ship object used in gameboard
+                const shipObj = player.gameboard.ships[shipIdx.slice(5)-1].ship;
+
+                setDroppableArea(player, shipObj, shipObj.axis);
+                dragEnter(player, shipObj, shipObj.axis);
+                dragEnd(player);
+            }
         })
     }
 
@@ -46,8 +71,13 @@ const DragDrop = (() => {
         return isValid;
     }
 
+    // Reset and set droppable areas with class 'grid-droppable' 
     function setDroppableArea(player, ship, axis) {
-        reset();
+        // Reset droppable grids to have class "grid-droppable"
+        document.querySelectorAll(".gameboard.p > .grid-unit").forEach((grid) => {
+            grid.classList.remove('grid-droppable');
+        })
+
         let emptyGrids = document.querySelectorAll(".gameboard.p > :not(.player-ship)");
         // Valid check if head is dropped in grid - 
         emptyGrids.forEach((grid) => {
@@ -72,38 +102,36 @@ const DragDrop = (() => {
             }
         })
     }
-
-    function drag(player) {
-        console.log("dragStart")
-        let playerShips = document.querySelectorAll(".gameboard.p > .player-ship");
-
-        playerShips.forEach((grid) => {
-            grid.addEventListener('dragstart', (e) => {
-                // Dragging ship - need to extract Ship object from the grid
-                const classes = [...grid.classList];
-                console.log(classes);
-                let shipIdx = classes.find(value => {
-                    return value.startsWith("ship-");
-                });
-                // Find class associated with ship + use as hashmap to reference exact ship object used in gameboard
-                const shipObj = player.gameboard.ships[shipIdx.slice(5)-1].ship;
-
-                setDroppableArea(player, shipObj, shipObj.axis);
-                dragEnter(player);
-                dragEnd(player);
-            })
-        })
-    }
-
+    
     // Drag ship enters droppable area - offer preview of how ship would look placed
-    function dragEnter(player) {
+    function dragEnter(player, ship, axis) {
         const droppableHeads = document.querySelectorAll(".grid-droppable");
 
         droppableHeads.forEach((grid) => {
-            grid.addEventListener('dragenter', (e) => {
+            grid.ondragenter = (e) => {
                 e.preventDefault();
-                console.log("Droppable");
-            })
+                // Reset preview grids
+                document.querySelectorAll(".gameboard.p > .grid-unit").forEach((grid) => {
+                    grid.classList.remove('grid-preview');
+                })
+
+                let head = parseInt(grid.id.slice(1));
+                if (axis == 0) {
+                    // Horizontal case 
+                    let coords = [...new Array(ship.length).keys()].map((x) => x + head); // Potential coords array of horizontal ship from head
+                    coords.forEach((idx) => {
+                        document.querySelector(`#p${idx}`).classList.add('grid-preview');
+                    })
+                }
+                else if (axis == 1) {
+                    // Vertical case
+                    // Validation - head must have empty n length grids below within bounds
+                    let coords = [...new Array(ship.length).keys()].map((x) => head + (x * 10)); // Coords array of vertical from head
+                    coords.forEach((idx) => {
+                        document.querySelector(`#p${idx}`).classList.add('grid-preview');
+                    })
+                }
+            }
         })
     }
 
@@ -112,10 +140,15 @@ const DragDrop = (() => {
         let playerShips = document.querySelectorAll(".gameboard.p > .player-ship");
 
         playerShips.forEach((grid) => {
-            grid.addEventListener('dragend', (e) => {
-                console.log("dragEnd")
-                setDraggableArea();
-            })
+            grid.ondragend = (e) => {
+                e.preventDefault();
+                // Reset preview grids
+                document.querySelectorAll(".gameboard.p > .grid-unit").forEach((grid) => {
+                    grid.classList.remove('grid-preview');
+                })
+
+                drag(player); // At each drag-end reset draggable, droppable content and rerun
+            };
         })
 
     }
@@ -125,7 +158,7 @@ const DragDrop = (() => {
     }
 
     return {
-        main
+        drag
     }
 })();
 

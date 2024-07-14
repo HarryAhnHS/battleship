@@ -50,7 +50,7 @@ const UI = (() => {
     }
 
     function playerShipSelect(player) {
-        DragDrop.main(player);
+        DragDrop.drag(player);
     }
 
     // Helper function - Return array of random coordinate placement based on ship's length

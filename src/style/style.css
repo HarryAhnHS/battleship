@@ -103,6 +103,10 @@ body {
     background-color: aliceblue;
 }
 
+.grid-preview {
+    background-color: blue;
+}
+
 /* results modal styling */
 dialog::backdrop {
     opacity: 0.9;
