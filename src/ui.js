@@ -1,6 +1,7 @@
 import Gameboard from "./gameboard";
 import Ship from "./ship";
 import Player from "./player";
+import DragDrop from "./dragDrop";
 import { pl } from "date-fns/locale";
 
 const UI = (() => {
@@ -40,15 +41,16 @@ const UI = (() => {
 
         placeRandomShips(player);
         placeRandomShips(computer);
-        // TODO - drag+drop select playerShipSelect(player);
+        // TODO - drag+drop select playerShipSelect(player)
+        initDisplayShips(player,computer);
 
-        displayShips(player,computer);
+        playerShipSelect(player);
 
         gameLogic(player, computer);
     }
 
     function playerShipSelect(player) {
-
+        DragDrop.main(player);
     }
 
     // Helper function - Return array of random coordinate placement based on ship's length
@@ -88,7 +90,7 @@ const UI = (() => {
         console.log(player);
     }
 
-    function displayShips(player, computer) {
+    function initDisplayShips(player, computer) {
         // Mark each ship with class to distinguish
         let i = 1;
         let j = 1;
