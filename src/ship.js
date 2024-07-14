@@ -1,9 +1,17 @@
 export default class Ship {
-    constructor(length) {
+    constructor(length, axis=0) {
         this.length = length,
         this.hits = 0;
         this.isSunk = false;
-        this.axis = 0; // 0 horizontal, 1 vertical
+        this.axis = axis; // 0 horizontal, 1 vertical
+    }
+
+    setAxis(axis) {
+        this.axis = axis;
+    }
+
+    getAxis() {
+        return this.axis;
     }
 
     hit() {

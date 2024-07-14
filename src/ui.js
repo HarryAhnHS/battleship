@@ -72,7 +72,7 @@ const UI = (() => {
             // Vertical - must all have same x%10 value to be in same x-axis
             coords = coords.map((x) => pos + (10 * x));
         }
-        return coords;
+        return {array: coords, axis};
     }
 
     function placeRandomShips(player) {
@@ -81,11 +81,12 @@ const UI = (() => {
         fleet.forEach((ship) => {
             let coords = randomCoordinates(ship);
             // Error check cycle until valid - then place
-            while (!player.gameboard.isValidPlacement(ship, coords)) {
+            while (!player.gameboard.isValidPlacement(ship, coords.array)) {
                 coords = randomCoordinates(ship);
                 console.log("Invalid randomization - Cycling")
             }
-            player.gameboard.placeShip(ship, coords);
+            player.gameboard.placeShip(ship, coords.array);
+            ship.setAxis(coords.axis);
         })
         console.log(player);
     }
