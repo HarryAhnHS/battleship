@@ -78,9 +78,9 @@ const DragDrop = (() => {
             grid.classList.remove('grid-droppable');
         })
 
-        let emptyGrids = document.querySelectorAll(".gameboard.p > :not(.player-ship)");
+        let playerGrids= document.querySelectorAll(".gameboard.p > .grid-unit");
         // Valid check if head is dropped in grid - 
-        emptyGrids.forEach((grid) => {
+        playerGrids.forEach((grid) => {
             let head = parseInt(grid.id.slice(1));
             if (axis == 0) {
                 // Horizontal case 
