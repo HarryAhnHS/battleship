@@ -17,9 +17,13 @@ const DragDrop = (() => {
             grid.ondragstart = ((e) => {
             }) 
             grid.ondragenter = ((e) => {
+                e.preventDefault();
             }) 
             grid.ondragend = ((e) => {
             }) 
+            grid.ondragover = ((e) => {
+                e.preventDefault();
+            })
         })
     }
 
@@ -49,11 +53,19 @@ const DragDrop = (() => {
                 let shipIdx = classes.find(value => {
                     return value.startsWith("ship-");
                 });
+                shipIdx = shipIdx.slice(5)-1;
                 // Find class associated with ship + use as hashmap to reference exact ship object used in gameboard
-                const shipObj = player.gameboard.ships[shipIdx.slice(5)-1].ship;
+                const shipObj = player.gameboard.ships[shipIdx].ship;
+
+                // Style current dragged ship
+                player.gameboard.ships[shipIdx].coords.forEach((idx) => {
+                    document.getElementById(`p${idx}`).classList.add("dragging");
+                });
 
                 setDroppableArea(player, shipObj, shipObj.axis);
+
                 dragEnter(player, shipObj, shipObj.axis);
+                dragDrop(player, shipObj, shipObj.axis, shipIdx);
                 dragEnd(player);
             }
         })
@@ -78,7 +90,7 @@ const DragDrop = (() => {
             grid.classList.remove('grid-droppable');
         })
 
-        let playerGrids= document.querySelectorAll(".gameboard.p > .grid-unit");
+        let playerGrids = document.querySelectorAll(".gameboard.p > .grid-unit");
         // Valid check if head is dropped in grid - 
         playerGrids.forEach((grid) => {
             let head = parseInt(grid.id.slice(1));
@@ -143,9 +155,14 @@ const DragDrop = (() => {
             grid.ondragend = (e) => {
                 e.preventDefault();
                 // Reset preview grids
+                // Reset droppable grids to have class "grid-droppable"
+                // Reset dragging class
                 document.querySelectorAll(".gameboard.p > .grid-unit").forEach((grid) => {
                     grid.classList.remove('grid-preview');
+                    grid.classList.remove('grid-droppable');
+                    grid.classList.remove("dragging");
                 })
+
 
                 drag(player); // At each drag-end reset draggable, droppable content and rerun
             };
@@ -153,8 +170,39 @@ const DragDrop = (() => {
 
     }
 
-    function dragPlace(player) {
+    // Drag place in valid grid
+    function dragDrop(player, ship, axis, shipIdx) {
+        const droppableHeads = document.querySelectorAll(".grid-droppable");
+        droppableHeads.forEach((grid) => {
+            grid.ondrop = (e) => {
+                // Update gameboard ships[] array and grids[] array
+                const head = parseInt(grid.id.slice(1));
+                let newCoords;
+                if (axis == 0) {
+                    // Horizontal case 
+                    newCoords = [...new Array(ship.length).keys()].map((x) => x + head);
+                }
+                else if (axis == 1) {
+                    // Vertical case
+                    // Validation - head must have empty n length grids below within bounds
+                    newCoords = [...new Array(ship.length).keys()].map((x) => head + (x * 10));
+                }
 
+                // Update gameboard grids[]
+                const oldCoords = player.gameboard.ships[shipIdx].coords;
+                oldCoords.forEach((idx) => {
+                    player.gameboard.grids[idx] = null;
+                })
+                newCoords.forEach((idx) => {
+                    player.gameboard.grids[idx] = ship;
+                })
+
+                // Change coords in gameboard ships[] object
+                player.gameboard.ships[shipIdx].coords = newCoords;
+
+                console.log(player);
+            };
+        })
     }
 
     return {

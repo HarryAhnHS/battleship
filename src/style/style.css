@@ -99,12 +99,16 @@ body {
 }
 
 /* Drag drop */
-.grid-droppable {
+.grid-droppable:not(.player-ship) {
     background-color: aliceblue;
 }
 
 .grid-preview {
-    background-color: blue;
+    background-color: blue !important;
+}
+
+.grid-dragging {
+    filter: brightness(20%);
 }
 
 /* results modal styling */
