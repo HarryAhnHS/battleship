@@ -6,7 +6,7 @@ import Ship from './ship'
 const DragDrop = (() => {
     function main(player) {
         setDraggableContent();
-        setDroppableArea(player, new Ship(5), 1);
+        dragStart(player, );
     }
 
     function setDraggableContent() {
@@ -15,12 +15,14 @@ const DragDrop = (() => {
         // Reset draggable content
         playerGrids.forEach((grid) => {
             grid.setAttribute("draggable", false);
+            grid.style['cursor'] = 'auto';
         })
 
         // Draggable content = any grid with ship class
         let playerShips = document.querySelectorAll(".gameboard.p > .player-ship");
         playerShips.forEach((grid) => {
             grid.setAttribute("draggable", true);
+            grid.style['cursor'] = 'pointer';
         })
     }
 
@@ -69,13 +71,23 @@ const DragDrop = (() => {
         })
     }
 
-    function dragStart() {
+    function dragStart(player) {
         console.log("drag")
         let playerShips = document.querySelectorAll(".gameboard.p > .player-ship");
 
         playerShips.forEach((grid) => {
             grid.addEventListener('dragstart', (e) => {
-                console.log(grid + "Draggin")
+                // Dragging ship - need to extract Ship object from the grid
+                const classes = [...grid.classList];
+                console.log(classes);
+                let shipIdx = classes.find(value => {
+                    return value.startsWith("ship-");
+                });
+                // Find class associated with ship + use as hashmap to reference exact ship object used in gameboard
+                const ship = player.gameboard.ships[shipIdx.slice(5)-1];
+                console.log(ship);
+
+                // setDroppableArea(player, new Ship(5), 0);
             })
         })
     }
