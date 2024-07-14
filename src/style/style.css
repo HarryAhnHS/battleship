@@ -77,6 +77,12 @@ body {
     background-color: blue;
 }
 
+/* Drag drop */
+
+.grid-droppable {
+    background-color: aliceblue;
+}
+
 /* results modal styling */
 dialog::backdrop {
     opacity: 0.9;

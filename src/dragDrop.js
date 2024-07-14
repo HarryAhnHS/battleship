@@ -5,11 +5,11 @@ import Ship from './ship'
 
 const DragDrop = (() => {
     function main(player) {
-        setDraggableContent();
-        dragStart(player, );
+        setDraggableArea();
+        drag(player);
     }
 
-    function setDraggableContent() {
+    function reset() {
         let playerGrids = document.querySelectorAll(".gameboard.p > .grid-unit");
 
         // Reset draggable content
@@ -18,6 +18,14 @@ const DragDrop = (() => {
             grid.style['cursor'] = 'auto';
         })
 
+        // Reset droppable grids to have class "grid-droppable"
+        document.querySelectorAll(".gameboard.p > .grid-unit").forEach((grid) => {
+            grid.classList.remove('grid-droppable');
+        })
+    }
+
+    function setDraggableArea() {
+        reset();
         // Draggable content = any grid with ship class
         let playerShips = document.querySelectorAll(".gameboard.p > .player-ship");
         playerShips.forEach((grid) => {
@@ -39,11 +47,7 @@ const DragDrop = (() => {
     }
 
     function setDroppableArea(player, ship, axis) {
-        // Reset droppable grids to have class "grid-droppable"
-        document.querySelectorAll(".gameboard.p > .grid-unit").forEach((grid) => {
-            grid.classList.remove('grid-droppable');
-        })
-
+        reset();
         let emptyGrids = document.querySelectorAll(".gameboard.p > :not(.player-ship)");
         // Valid check if head is dropped in grid - 
         emptyGrids.forEach((grid) => {
@@ -51,13 +55,11 @@ const DragDrop = (() => {
             if (axis == 0) {
                 // Horizontal case 
                 // Validation - head must have empty n length to the right
-                let coords = [...new Array(ship.length).keys()].map((x) => x+head); // Coords array of ship
-                console.log('grid-droppable');
+                let coords = [...new Array(ship.length).keys()].map((x) => x + head); // Coords array of horizontal ship from head
                 if (coords.every((x) => Math.floor(x/10) == Math.floor(coords[0]/10))
                     && isDroppable(player, ship, coords)) {
                     //  Then valid - set droppable
                     grid.classList.add('grid-droppable');
-                    console.log('grid-droppable');
                 }
             }
             else if (axis == 1) {
@@ -71,8 +73,8 @@ const DragDrop = (() => {
         })
     }
 
-    function dragStart(player) {
-        console.log("drag")
+    function drag(player) {
+        console.log("dragStart")
         let playerShips = document.querySelectorAll(".gameboard.p > .player-ship");
 
         playerShips.forEach((grid) => {
@@ -84,17 +86,46 @@ const DragDrop = (() => {
                     return value.startsWith("ship-");
                 });
                 // Find class associated with ship + use as hashmap to reference exact ship object used in gameboard
-                const ship = player.gameboard.ships[shipIdx.slice(5)-1];
-                console.log(ship);
+                const shipObj = player.gameboard.ships[shipIdx.slice(5)-1].ship;
 
-                // setDroppableArea(player, new Ship(5), 0);
+                setDroppableArea(player, shipObj, 0);
+                dragEnter(player);
+                dragEnd(player);
             })
         })
     }
 
+    // Drag ship enters droppable area - offer preview of how ship would look placed
+    function dragEnter(player) {
+        const droppableHeads = document.querySelectorAll(".grid-droppable");
+
+        droppableHeads.forEach((grid) => {
+            grid.addEventListener('dragenter', (e) => {
+                e.preventDefault();
+                console.log("Droppable");
+            })
+        })
+    }
+
+    // Drag end - regardless of successful drop or not
+    function dragEnd(player) {
+        let playerShips = document.querySelectorAll(".gameboard.p > .player-ship");
+
+        playerShips.forEach((grid) => {
+            grid.addEventListener('dragend', (e) => {
+                console.log("dragEnd")
+                setDraggableArea();
+            })
+        })
+
+    }
+
+    function dragPlace(player) {
+
+    }
+
     return {
-        main,
-        dragStart
+        main
     }
 })();
 
