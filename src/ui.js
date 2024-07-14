@@ -35,6 +35,10 @@ const UI = (() => {
     }
 
     function initGame() {
+        // DOM for prep stage
+        document.querySelector(".header-helper").textContent = "Assemble your fleet";
+        document.querySelector(".gameboard.c").style['pointer-events'] = "none";
+
         displayGrids();
         let player = new Player;
         let computer = new Player;
@@ -46,6 +50,10 @@ const UI = (() => {
         playerShipSelect(player);
 
         document.querySelector("#start").onclick = (e) => {
+            // DOM for battle
+            document.querySelector(".header-helper").textContent = "Begin the battle";
+            document.querySelector(".gameboard.c").style['pointer-events'] = "auto";
+
             DragDrop.terminate(); // Terminate grid events
             gameLogic(player, computer);           
         }
