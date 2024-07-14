@@ -99,9 +99,6 @@ const UI = (() => {
             shipObj.coords.forEach((coord) => {
                 document.querySelector(`.gameboard.p > #p${coord}`).classList.add(`ship-${i}`);
                 document.querySelector(`.gameboard.p > #p${coord}`).classList.add("player-ship");
-                if (shipObj.ship.isSunk) {
-                    document.querySelector(`.gameboard.c > #c${coord}`).classList.add("grid-sunk");
-                }
             })
             i++;
         })
@@ -110,9 +107,7 @@ const UI = (() => {
         computer.gameboard.ships.forEach((shipObj) => {
             shipObj.coords.forEach((coord) => {
                 document.querySelector(`.gameboard.c > #c${coord}`).classList.add(`ship-${j}`);
-                if (shipObj.ship.isSunk) {
-                    document.querySelector(`.gameboard.c > #c${coord}`).classList.add("grid-sunk");
-                }
+                document.querySelector(`.gameboard.c > #c${coord}`).classList.add("grid-hidden");
             })
             j++;
         })
@@ -135,6 +130,7 @@ const UI = (() => {
         compAttacks.forEach((idx) => {
             if (computer.gameboard.grids[idx]) {
                 document.querySelector(`#c${idx}`).classList.add("grid-found");
+                document.querySelector(`#c${idx}`).classList.remove("grid-hidden");
             }
             else {
                 document.querySelector(`#c${idx}`).classList.add("grid-missed");
@@ -146,7 +142,9 @@ const UI = (() => {
         player.gameboard.ships.forEach((shipObj) => {
             shipObj.coords.forEach((coord) => {
                 if (shipObj.ship.isSunk) {
-                    document.querySelector(`.gameboard.c > #c${coord}`).classList.add("grid-sunk");
+                    document.querySelector(`.gameboard.p > #p${coord}`).classList.add("grid-sunk");
+                    document.querySelector(`.gameboard.p > #p${coord}`).classList.remove("grid-found");
+                    document.querySelector(`.gameboard.p > #p${coord}`).innerHTML = "&#10005;";
                 }
             })
         })
@@ -154,6 +152,8 @@ const UI = (() => {
             shipObj.coords.forEach((coord) => {
                 if (shipObj.ship.isSunk) {
                     document.querySelector(`.gameboard.c > #c${coord}`).classList.add("grid-sunk");
+                    document.querySelector(`.gameboard.c > #c${coord}`).classList.remove("grid-found");
+                    document.querySelector(`.gameboard.c > #c${coord}`).innerHTML = "&#10005;";
                 }
             })
         })

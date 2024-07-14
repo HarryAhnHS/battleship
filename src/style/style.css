@@ -55,18 +55,18 @@ body {
 .gameboard.c > .grid-unit:hover, 
 .gameboard.c > .grid-unit:focus {
     cursor: pointer;
-} 
+}
+
+.grid-hidden {
+    background-color: white !important;
+}
 
 .grid-unit {
     outline: 0.5px solid lightgrey;
 }
 
-.player-ship {
-    /* background-color: black; */
-}
-
 .grid-found {
-    background-color: green;
+    background-color: green !important;
 }
 
 .grid-missed {
@@ -74,7 +74,7 @@ body {
 }
 
 .grid-sunk {
-    background-color: blue;
+    background-color: black;
 }
 
 /* Grid-ship individual styling*/
