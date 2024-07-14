@@ -24,6 +24,18 @@ const DragDrop = (() => {
         })
     }
 
+    // Helper bool - Valid droppable place for head - ignore current ship's position when checking validity
+    function isDroppable(player, ship, coords) {
+        let isValid = true;
+        coords.forEach((idx) => {
+            if ((player.gameboard.grids[idx] != null && player.gameboard.grids[idx] != ship) || coords.length != ship.length || idx < 0 || idx > 99) {
+                // Bounds check placement idx and if not empty
+                isValid = false; 
+            }
+        })
+        return isValid;
+    }
+
     function setDroppableArea(player, ship, axis) {
         // Reset droppable grids to have class "grid-droppable"
         document.querySelectorAll(".gameboard.p > .grid-unit").forEach((grid) => {
@@ -40,7 +52,7 @@ const DragDrop = (() => {
                 let coords = [...new Array(ship.length).keys()].map((x) => x+head); // Coords array of ship
                 console.log('grid-droppable');
                 if (coords.every((x) => Math.floor(x/10) == Math.floor(coords[0]/10))
-                    && player.gameboard.isValidPlacement(ship, coords)) {
+                    && isDroppable(player, ship, coords)) {
                     //  Then valid - set droppable
                     grid.classList.add('grid-droppable');
                     console.log('grid-droppable');
@@ -49,8 +61,8 @@ const DragDrop = (() => {
             else if (axis == 1) {
                 // Vertical case
                 // Validation - head must have empty n length grids below within bounds
-                let coords = [...new Array(ship.length).keys()].map((x) => head + (x*10)); // Coords array of ship
-                if (player.gameboard.isValidPlacement(ship, coords)) {
+                let coords = [...new Array(ship.length).keys()].map((x) => head + (x*10)); // Coords array of vertical from head
+                if (isDroppable(player, ship, coords)) {
                     grid.classList.add('grid-droppable');
                 }
             }
