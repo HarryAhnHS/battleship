@@ -43,14 +43,16 @@ const UI = (() => {
         placeRandomShips(computer);
         // TODO - drag+drop select playerShipSelect(player)
         initDisplayShips(player,computer);
-
         playerShipSelect(player);
 
-        gameLogic(player, computer);
+        document.querySelector("#start").onclick = (e) => {
+            DragDrop.terminate(); // Terminate grid events
+            gameLogic(player, computer);           
+        }
     }
 
     function playerShipSelect(player) {
-        DragDrop.drag(player);
+        DragDrop.init(player);
     }
 
     // Helper function - Return array of random coordinate placement based on ship's length

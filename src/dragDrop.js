@@ -29,7 +29,7 @@ const DragDrop = (() => {
                     if (isDroppable(player, shipObj, newCoords)) {
                         // Check if droppable - then rotate
                         replaceShip(player, shipIdx, oldCoords, newCoords, 1);
-                        drag(player);
+                        init(player);
                     }
                 }
                 else if (shipObj.axis == 1) {
@@ -38,16 +38,14 @@ const DragDrop = (() => {
                     if (newCoords.every((x) => Math.floor(x/10) == Math.floor(newCoords[0]/10))
                         && isDroppable(player, shipObj, newCoords)) {
                         replaceShip(player, shipIdx, oldCoords, newCoords, 0); 
-                        drag(player);
+                        init(player);
                     }
                 }    
             }
-            
-
         });
     }
 
-    function drag(player) {
+    function init(player) {
         reset();
         setDraggableArea();
         dragStart(player);
@@ -209,7 +207,7 @@ const DragDrop = (() => {
                 })
 
 
-                drag(player); // At each drag-end reset draggable, droppable content and rerun
+                init(player); // At each drag-end reset draggable, droppable content and rerun
             };
         })
     }
@@ -257,8 +255,18 @@ const DragDrop = (() => {
         UI.updatePlacedShips(oldCoords, newCoords, shipIdx);
     }
 
+    function terminate() {
+        reset();
+        // Reset draggable content
+        document.querySelectorAll(".gameboard.p > .grid-unit").forEach((grid) => {
+            grid.setAttribute("draggable", false);
+            grid.style['cursor'] = 'auto';
+        });
+    }
+
     return {
-        drag
+        init,
+        terminate
     }
 })();
 
