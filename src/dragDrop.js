@@ -188,6 +188,7 @@ const DragDrop = (() => {
                     newCoords = [...new Array(ship.length).keys()].map((x) => head + (x * 10));
                 }
 
+                // Storage changes
                 // Update gameboard grids[]
                 const oldCoords = player.gameboard.ships[shipIdx].coords;
                 oldCoords.forEach((idx) => {
@@ -196,9 +197,11 @@ const DragDrop = (() => {
                 newCoords.forEach((idx) => {
                     player.gameboard.grids[idx] = ship;
                 })
-
                 // Change coords in gameboard ships[] object
                 player.gameboard.ships[shipIdx].coords = newCoords;
+
+                // Front-End changes
+                UI.updatePlacedShips(oldCoords, newCoords, shipIdx);
 
                 console.log(player);
             };

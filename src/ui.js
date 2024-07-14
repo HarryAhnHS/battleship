@@ -44,12 +44,12 @@ const UI = (() => {
         // TODO - drag+drop select playerShipSelect(player)
         initDisplayShips(player,computer);
 
-        playerShipSelect(player);
+        playerShipSelect(player, computer);
 
         gameLogic(player, computer);
     }
 
-    function playerShipSelect(player) {
+    function playerShipSelect(player, computer) {
         DragDrop.drag(player);
     }
 
@@ -113,6 +113,18 @@ const UI = (() => {
         })
     }
 
+    function updatePlacedShips(oldCoords, newCoords, shipIdx) {
+        // Replace classes `ship-${shipIdx}` + 'player-ship'
+        oldCoords.forEach((idx) => {
+            document.querySelector(`#p${idx}`).classList.remove(`ship-${shipIdx+1}`);
+            document.querySelector(`#p${idx}`).classList.remove(`player-ship`);
+        })
+        newCoords.forEach((idx) => {
+            document.querySelector(`#p${idx}`).classList.add(`ship-${shipIdx+1}`);
+            document.querySelector(`#p${idx}`).classList.add(`player-ship`);
+        })
+    }
+
     function updateGrids(player, computer) {
         // Update player grids
         let playerAttacks = player.gameboard.attacks;
@@ -148,15 +160,17 @@ const UI = (() => {
                 }
             })
         })
-        computer.gameboard.ships.forEach((shipObj) => {
-            shipObj.coords.forEach((coord) => {
-                if (shipObj.ship.isSunk) {
-                    document.querySelector(`.gameboard.c > #c${coord}`).classList.add("grid-sunk");
-                    document.querySelector(`.gameboard.c > #c${coord}`).classList.remove("grid-found");
-                    document.querySelector(`.gameboard.c > #c${coord}`).innerHTML = "&#10005;";
-                }
+        if (computer) {
+            computer.gameboard.ships.forEach((shipObj) => {
+                shipObj.coords.forEach((coord) => {
+                    if (shipObj.ship.isSunk) {
+                        document.querySelector(`.gameboard.c > #c${coord}`).classList.add("grid-sunk");
+                        document.querySelector(`.gameboard.c > #c${coord}`).classList.remove("grid-found");
+                        document.querySelector(`.gameboard.c > #c${coord}`).innerHTML = "&#10005;";
+                    }
+                })
             })
-        })
+        }
     }
 
     function gameLogic(player, computer) {
@@ -234,7 +248,8 @@ const UI = (() => {
 
     return {
         displayGrids,
-        initGame
+        initGame,
+        updatePlacedShips
     }
 
 })();
