@@ -44,12 +44,12 @@ const UI = (() => {
         // TODO - drag+drop select playerShipSelect(player)
         initDisplayShips(player,computer);
 
-        playerShipSelect(player, computer);
+        playerShipSelect(player);
 
         gameLogic(player, computer);
     }
 
-    function playerShipSelect(player, computer) {
+    function playerShipSelect(player) {
         DragDrop.drag(player);
     }
 

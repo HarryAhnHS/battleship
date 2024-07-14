@@ -5,13 +5,56 @@ import Ship from './ship'
 
 const DragDrop = (() => {
 
+    function click(player) {
+        document.querySelectorAll(".gameboard.p > .player-ship").forEach((grid) => {
+            grid.onclick = (e) => {
+                // extract shipIdx from grid
+                const classes = [...grid.classList];
+                let shipIdx = classes.find(value => {
+                    return value.startsWith("ship-");
+                });
+                shipIdx = shipIdx.slice(5)-1;
+                // Find class associated with ship + use as hashmap to reference exact ship object used in gameboard
+                const shipObj = player.gameboard.ships[shipIdx].ship;
+                const oldCoords = player.gameboard.ships[shipIdx].coords;
+                // Get head (smallest idx)
+                console.log(oldCoords);
+                let head = Math.min(...oldCoords);
+
+                // Attempt rotation
+                if (shipObj.axis == 0) {
+                    // Horizontal --> Vertical
+                    let newCoords = [...new Array(shipObj.length).keys()].map((x) => head + (x * 10)); // Coords array of vertical from head
+                    
+                    if (isDroppable(player, shipObj, newCoords)) {
+                        // Check if droppable - then rotate
+                        replaceShip(player, shipIdx, oldCoords, newCoords, 1);
+                        drag(player);
+                    }
+                }
+                else if (shipObj.axis == 1) {
+                    // Vertical --> Horizontal
+                    let newCoords = [...new Array(shipObj.length).keys()].map((x) => x + head); // Coords array of horizontal ship from head
+                    if (newCoords.every((x) => Math.floor(x/10) == Math.floor(newCoords[0]/10))
+                        && isDroppable(player, shipObj, newCoords)) {
+                        replaceShip(player, shipIdx, oldCoords, newCoords, 0); 
+                        drag(player);
+                    }
+                }    
+            }
+            
+
+        });
+    }
+
     function drag(player) {
         reset();
         setDraggableArea();
         dragStart(player);
+        click(player);
     }
 
-    // reset all drag event listeners
+    // reset all drag/click event listeners
     function reset() {
         document.querySelectorAll(".gameboard.p > .grid-unit").forEach((grid) => {
             grid.ondragstart = ((e) => {
@@ -23,6 +66,8 @@ const DragDrop = (() => {
             }) 
             grid.ondragover = ((e) => {
                 e.preventDefault();
+            })
+            grid.onclick = ((e) => {
             })
         })
     }
@@ -167,7 +212,6 @@ const DragDrop = (() => {
                 drag(player); // At each drag-end reset draggable, droppable content and rerun
             };
         })
-
     }
 
     // Drag place in valid grid
@@ -188,24 +232,29 @@ const DragDrop = (() => {
                     newCoords = [...new Array(ship.length).keys()].map((x) => head + (x * 10));
                 }
 
-                // Storage changes
-                // Update gameboard grids[]
                 const oldCoords = player.gameboard.ships[shipIdx].coords;
-                oldCoords.forEach((idx) => {
-                    player.gameboard.grids[idx] = null;
-                })
-                newCoords.forEach((idx) => {
-                    player.gameboard.grids[idx] = ship;
-                })
-                // Change coords in gameboard ships[] object
-                player.gameboard.ships[shipIdx].coords = newCoords;
-
-                // Front-End changes
-                UI.updatePlacedShips(oldCoords, newCoords, shipIdx);
-
+                replaceShip(player, shipIdx, oldCoords, newCoords, ship.axis);
                 console.log(player);
             };
         })
+    }
+    function replaceShip(player, shipIdx, oldCoords, newCoords, newAxis) {
+        // Storage changes
+        // Update gameboard grids[]
+        oldCoords.forEach((idx) => {
+            player.gameboard.grids[idx] = null;
+        })
+        newCoords.forEach((idx) => {
+            player.gameboard.grids[idx] = player.gameboard.ships[shipIdx].ship;
+        })
+        // Change coords in gameboard ships[] object
+        player.gameboard.ships[shipIdx].coords = newCoords;
+
+        // Update axis
+        player.gameboard.ships[shipIdx].ship.axis = newAxis;
+
+        // Front-End changes
+        UI.updatePlacedShips(oldCoords, newCoords, shipIdx);
     }
 
     return {
