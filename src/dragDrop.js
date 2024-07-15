@@ -26,7 +26,7 @@ const DragDrop = (() => {
                 const shipObj = player.gameboard.ships[shipIdx].ship;
                 const oldCoords = player.gameboard.ships[shipIdx].coords;
                 
-                let head = Math.min(...oldCoords);
+                const head = Math.min(...oldCoords);
 
                 // Attempt rotation
                 if (shipObj.axis == 0) {
@@ -114,7 +114,7 @@ const DragDrop = (() => {
     // Helper bool - Valid droppable place for head - ignore current ship's position when checking validity
     function isDroppable(player, ship, coords) {
         let isValid = true;
-        coords.forEach((idx) => {
+        coords.forEach((idx) => { 
             if ((player.gameboard.grids[idx] != null && player.gameboard.grids[idx] != ship) || coords.length != ship.length || idx < 0 || idx > 99) {
                 // Bounds check placement idx and if not empty
                 isValid = false; 
@@ -124,21 +124,21 @@ const DragDrop = (() => {
     }
 
     // Reset and set droppable areas with class 'grid-droppable' 
-    function setDroppableArea(player, ship, axis) {
+    function setDroppableArea(player, ship, axis, shipOffset) {
         // Reset droppable grids to have class "grid-droppable"
         document.querySelectorAll(".gameboard.p > .grid-unit").forEach((grid) => {
             grid.classList.remove('grid-droppable');
             grid.classList.remove('ship-droppable');
         })
 
-        let playerGrids = document.querySelectorAll(".gameboard.p > .grid-unit");
+        const playerGrids = document.querySelectorAll(".gameboard.p > .grid-unit");
         // Valid check if head is dropped in grid - 
         playerGrids.forEach((grid) => {
-            let head = parseInt(grid.id.slice(1));
+            const head = parseInt(grid.id.slice(1));
             if (axis == 0) {
                 // Horizontal case 
                 // Validation - head must have empty n length to the right
-                let coords = [...new Array(ship.length).keys()].map((x) => x + head); // Coords array of horizontal ship from head
+                let coords = [...new Array(ship.length).keys()].map((x) => x + head - shipOffset); // Coords array of horizontal ship from head + Account for offset in potential coords
                 if (coords.every((x) => Math.floor(x/10) == Math.floor(coords[0]/10))
                     && isDroppable(player, ship, coords)) {
                     //  Then valid - set droppable
@@ -153,7 +153,7 @@ const DragDrop = (() => {
             else if (axis == 1) {
                 // Vertical case
                 // Validation - head must have empty n length grids below within bounds
-                let coords = [...new Array(ship.length).keys()].map((x) => head + (x*10)); // Coords array of vertical from head
+                let coords = [...new Array(ship.length).keys()].map((x) => head + ((x - shipOffset) * 10)); // Coords array of vertical from head
                 if (isDroppable(player, ship, coords)) {
                     grid.classList.add('grid-droppable');
 
@@ -185,7 +185,12 @@ const DragDrop = (() => {
                     document.getElementById(`p${idx}`).classList.add("dragging");
                 });
 
-                setDroppableArea(player, shipObj, shipObj.axis);
+                // Get grid position of current dragged ship
+                const shipOffset = [...player.gameboard.ships[shipIdx].coords].sort().findIndex(x => x == parseInt(grid.id.slice(1)));
+
+                console.log(shipOffset);
+
+                setDroppableArea(player, shipObj, shipObj.axis, shipOffset);
                 dragEnter(player, shipObj, shipObj.axis, shipIdx);
                 dragEnd(player);
             }
@@ -205,7 +210,7 @@ const DragDrop = (() => {
                 })
 
                 // Get head value 
-                let head = parseInt(grid.id.slice(1));
+                const head = parseInt(grid.id.slice(1));
                 if (axis == 0) {
                     // Horizontal case 
                     let preview = [...new Array(ship.length).keys()].map((x) => x + head); // Potential coords array of horizontal ship from head

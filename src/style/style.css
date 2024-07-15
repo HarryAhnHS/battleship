@@ -115,9 +115,9 @@ body {
     outline: 3px solid blue;
 }
 
-.ship-droppable:not(.player-ship) {
+/* .ship-droppable:not(.player-ship) {
     background-color: lightsalmon;
-}
+} */
 
 .grid-preview {
     background-color: blue !important;
