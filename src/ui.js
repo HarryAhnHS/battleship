@@ -217,7 +217,7 @@ const UI = (() => {
 
         // Delay when AI picks
         document.querySelector(".gameboard.c").style['pointer-events'] = "none";
-        await delay(1000);
+        await delay(500);
         document.querySelector(".gameboard.c").style['pointer-events'] = "auto";
 
         AIAttack(player);
