@@ -191,17 +191,17 @@ const DragDrop = (() => {
                 console.log(shipOffset);
 
                 setDroppableArea(player, shipObj, shipObj.axis, shipOffset);
-                dragEnter(player, shipObj, shipObj.axis, shipIdx);
+                dragEnter(player, shipObj, shipObj.axis, shipIdx, shipOffset);
                 dragEnd(player);
             }
         })
     }
     
     // Drag ship enters droppable area - offer preview of how ship would look placed
-    function dragEnter(player, ship, axis, shipIdx) {
-        const droppableHeads = document.querySelectorAll(".grid-droppable");
+    function dragEnter(player, ship, axis, shipIdx, shipOffset) {
+        const droppable = document.querySelectorAll(".grid-droppable");
 
-        droppableHeads.forEach((grid) => {
+        droppable.forEach((grid) => {
             grid.ondragenter = (e) => {
                 e.preventDefault();
                 // Reset preview grids
@@ -210,9 +210,9 @@ const DragDrop = (() => {
                 })
 
                 // Get head value 
-                const head = parseInt(grid.id.slice(1));
                 if (axis == 0) {
                     // Horizontal case 
+                    const head = parseInt(grid.id.slice(1)) - shipOffset; // Update head value to be offsetted
                     let preview = [...new Array(ship.length).keys()].map((x) => x + head); // Potential coords array of horizontal ship from head
                     preview.forEach((idx) => {
                         document.querySelector(`#p${idx}`).classList.add('grid-preview');
@@ -221,7 +221,7 @@ const DragDrop = (() => {
                 }
                 else if (axis == 1) {
                     // Vertical case
-                    // Validation - head must have empty n length grids below within bounds
+                    const head = parseInt(grid.id.slice(1)) - (10 * shipOffset); // Update head value to be offsetted
                     let preview = [...new Array(ship.length).keys()].map((x) => head + (x * 10)); // Coords array of vertical from head
                     preview.forEach((idx) => {
                         document.querySelector(`#p${idx}`).classList.add('grid-preview');
