@@ -215,9 +215,10 @@ const UI = (() => {
         updateShips(player, computer);
         if (computer.gameboard.isGameOver()) gameOver("Player", player);
 
-        // document.querySelector(".gameboard.c").style['pointer-events'] = "none";
-        // await delay(1000);
-        // document.querySelector(".gameboard.c").style['pointer-events'] = "auto";
+        // Delay when AI picks
+        document.querySelector(".gameboard.c").style['pointer-events'] = "none";
+        await delay(1000);
+        document.querySelector(".gameboard.c").style['pointer-events'] = "auto";
 
         AIAttack(player);
         updateGrids(player, computer);
