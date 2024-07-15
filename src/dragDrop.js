@@ -15,6 +15,7 @@ const DragDrop = (() => {
     function click(player) {
         document.querySelectorAll(".gameboard.p > .player-ship").forEach((grid) => {
             grid.onclick = (e) => {
+                console.log("clicked");                
                 // extract shipIdx from grid
                 const classes = [...grid.classList];
                 let shipIdx = classes.find(value => {
@@ -24,8 +25,7 @@ const DragDrop = (() => {
                 // Find class associated with ship + use as hashmap to reference exact ship object used in gameboard
                 const shipObj = player.gameboard.ships[shipIdx].ship;
                 const oldCoords = player.gameboard.ships[shipIdx].coords;
-                // Get head (smallest idx)
-                console.log(oldCoords);
+                
                 let head = Math.min(...oldCoords);
 
                 // Attempt rotation
@@ -38,6 +38,9 @@ const DragDrop = (() => {
                         replaceShip(player, shipIdx, oldCoords, newCoords, 1);
                         init(player);
                     }
+                    else {
+                        shake(oldCoords);
+                    }
                 }
                 else if (shipObj.axis == 1) {
                     // Vertical --> Horizontal
@@ -47,9 +50,31 @@ const DragDrop = (() => {
                         replaceShip(player, shipIdx, oldCoords, newCoords, 0); 
                         init(player);
                     }
+                    else {
+                        shake(oldCoords);
+                    }
                 }    
             }
         });
+    }
+
+    // Helper function - animate coords using keyframes object
+    function shake(coords) {
+        console.log("shake");  
+        coords.forEach((idx) => {                
+            let grid = document.getElementById(`p${idx}`);
+            grid.animate([
+                {transform: "translate3d(-1px, 0, 0)"},
+                {transform: "translate3d(2px, 0, 0)"},
+                {transform: "translate3d(-4px, 0, 0)"},
+                {transform: "translate3d(4px, 0, 0)"},
+                {transform: "translate3d(-4px, 0, 0)"},
+                {transform: "translate3d(4px, 0, 0)"},
+                {transform: "translate3d(-4px, 0, 0)"},
+                {transform: "translate3d(2px, 0, 0)"},
+                {transform: "translate3d(-1px, 0, 0)"}
+            ], 500);
+        })
     }
 
     // reset all drag/click event listeners
