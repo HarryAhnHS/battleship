@@ -232,15 +232,6 @@ const UI = (() => {
 
         if (hitsNotSunk.length > 0) { 
             // Action - at least 1 hit to act upon
-            // Aggregate map to fit shipObj format for comparison
-            // let map = hitsNotSunk.map((hit) => {
-            //     const shipObjHit = [...player.gameboard.ships].find((shipObj) => shipObj.coords.includes(hit)); 
-            //     return {
-            //         shipObjHit,
-            //         hit
-            //     }
-            // })
-            // console.log(map);
 
             // Set unsunk ship obj with max hits to work on as target
             let target = {ship: new Ship(0), coords: []}; // Dummy variable to update as loop
@@ -260,9 +251,18 @@ const UI = (() => {
             
             if (target.ship.hits == 1) {
                 // 2. If only 1 hit is max, then must randomize left right top or right
-                let nwse = [-10, 1, +10, 1];
-                let base = target.ship.hits[0];
-                player.gameboard.receiveAttack(base + nwse[Math.floor(Math.random() * 2)]);
+                const nwse = [-10, 1, +10, 1];
+                const base = targetHits[0];
+                let next = base + nwse[Math.floor(Math.random() * 2)];
+
+                // Bounds check + not already attacked = cycle
+                while (player.gameboard.attacks.includes(next) || next < 0 || next > 99) {
+                    next = base + nwse[Math.floor(Math.random() * 2)];
+                }
+
+                player.gameboard.receiveAttack(next);
+                console.log("attacked cell: ", next);
+
                 return;
             }
             else {
@@ -274,7 +274,7 @@ const UI = (() => {
             }
         } 
         else {
-            // Random move
+            // 0. No hits to act upon - Random move
             player.gameboard.receiveAttack(Math.floor(Math.random() * options.length));
             return;
         }
