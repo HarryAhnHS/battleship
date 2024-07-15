@@ -194,7 +194,7 @@ const UI = (() => {
         })
     }
 
-    function playRound(player, computer, input) {
+    async function playRound(player, computer, input) {
         // Player turn
         // Update Grid Display
         // Check if winner
@@ -205,6 +205,10 @@ const UI = (() => {
         updateGrids(player, computer);
         updateShips(player, computer);
         if (computer.gameboard.isGameOver()) gameOver("Player", player);
+
+        // document.querySelector(".gameboard.c").style['pointer-events'] = "none";
+        // await delay(1000);
+        // document.querySelector(".gameboard.c").style['pointer-events'] = "auto";
 
         AIAttack(player);
         updateGrids(player, computer);
@@ -220,8 +224,60 @@ const UI = (() => {
 
     function AIAttack(player) {
         // Complete Randomization
-        let options = player.gameboard.getRemaining();
-        player.gameboard.receiveAttack(Math.floor(Math.random() * options.length));
+        const options = player.gameboard.getRemaining();
+
+        // Array to hold all currently actionable grids
+        const hitsNotSunk = player.gameboard.attacks.filter((hit) => 
+            player.gameboard.grids[hit] && !player.gameboard.grids[hit].isSunk);
+
+        if (hitsNotSunk.length > 0) { 
+            // Action - at least 1 hit to act upon
+            // Aggregate map to fit shipObj format for comparison
+            // let map = hitsNotSunk.map((hit) => {
+            //     const shipObjHit = [...player.gameboard.ships].find((shipObj) => shipObj.coords.includes(hit)); 
+            //     return {
+            //         shipObjHit,
+            //         hit
+            //     }
+            // })
+            // console.log(map);
+
+            // Set unsunk ship obj with max hits to work on as target
+            let target = {ship: new Ship(0), coords: []}; // Dummy variable to update as loop
+            player.gameboard.ships.forEach((shipObj) => {
+                if (!shipObj.ship.isSunk && shipObj.ship.hits > target.ship.hits) {
+                    // find max hit, unsunk ship
+                    target = shipObj;
+                }
+            })
+            console.log("Target = ", target);
+
+            // Get target's already hit coords
+            let targetHits = hitsNotSunk.filter((hit) => {
+                return player.gameboard.grids[hit] == target.ship && target.coords.includes(hit);
+            })
+            console.log("Target's already hit coords = ", targetHits);
+            
+            if (target.ship.hits == 1) {
+                // 2. If only 1 hit is max, then must randomize left right top or right
+                let nwse = [-10, 1, +10, 1];
+                let base = target.ship.hits[0];
+                player.gameboard.receiveAttack(base + nwse[Math.floor(Math.random() * 2)]);
+                return;
+            }
+            else {
+                // 3. If 2 hits or more is max, then can deduce the ship axis and guess left-1 or right+1 until done
+                // Determine axis - if horizontal +1 to largest or -1 
+                console.log("Step 3")
+                player.gameboard.receiveAttack(Math.floor(Math.random() * options.length));
+                return;
+            }
+        } 
+        else {
+            // Random move
+            player.gameboard.receiveAttack(Math.floor(Math.random() * options.length));
+            return;
+        }
     }
 
     // Helper function to delay
