@@ -36,6 +36,8 @@ const UI = (() => {
 
     function initGame() {
         // DOM for prep stage
+        document.querySelector("#start").style['display'] = 'flex'
+        document.querySelector("#restart").style['display'] = 'none'
         document.querySelector(".header-helper").textContent = "Assemble your fleet";
         document.querySelector(".gameboard.c").style['pointer-events'] = "none";
 
@@ -51,11 +53,18 @@ const UI = (() => {
 
         document.querySelector("#start").onclick = (e) => {
             // DOM for battle
+            document.querySelector("#start").style['display'] = 'none';
+            document.querySelector("#restart").style['display'] = 'flex';
             document.querySelector(".header-helper").textContent = "Begin the battle";
             document.querySelector(".gameboard.c").style['pointer-events'] = "auto";
 
             DragDrop.terminate(); // Terminate grid events
-            gameLogic(player, computer);           
+            gameLogic(player, computer);  
+        }
+
+        // Restart button once game begins
+        document.querySelector("#restart").onclick = (e) => {
+            initGame();
         }
     }
 
@@ -259,7 +268,6 @@ const UI = (() => {
 
                 player.gameboard.receiveAttack(next);
                 console.log("Step 2 attacked cell: ", next);
-
                 return;
             }
             else {
@@ -268,7 +276,6 @@ const UI = (() => {
                 // Determine axis - from 2 hits can assume 
                 // (Reference: Slight imperfection in logic) If 2,3,4,5 hits can technically be 2,3,4,5 ships
                 const axis = target.ship.axis;
-
                 if (axis == 0) {
                     // If horizontal, random left or right
                     const WE = [Math.min(...targetHits) - 1, Math.max(...targetHits) + 1];
