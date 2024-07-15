@@ -111,7 +111,11 @@ body {
 
 /* Drag drop */
 .grid-droppable:not(.player-ship) {
-    background-color: aliceblue;
+    outline: 3px solid blue;
+}
+
+.ship-droppable:not(.player-ship) {
+    background-color: lightsalmon;
 }
 
 .grid-preview {
