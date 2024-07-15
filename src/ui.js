@@ -259,12 +259,18 @@ const UI = (() => {
                 // 2. If only 1 hit is max, then must randomize left right top or right
                 const NWSE = [-10, -1, +10, 1];
                 const base = targetHits[0];
-                let next = base + NWSE[Math.floor(Math.random() * 4)];
+                let offset = NWSE[Math.floor(Math.random() * 4)];
+                let next = base + offset;
+
+                console.log(base)
+                console.log(next)
 
                 // Bounds check (edgecase: if horizontal must be in same y-axis) + not already attacked = cycle
                 while (player.gameboard.attacks.includes(next) || next < 0 || next > 99 
-                        || !Math.floor(next/10) == Math.floor(base/10)) {
-                    next = base + NWSE[Math.floor(Math.random() * 4)];
+                        || ((offset == -1 || offset == 1) && !(Math.floor(next/10) == Math.floor(base/10)))) {
+                    offset = NWSE[Math.floor(Math.random() * 4)];
+                    next = base + offset;
+                    console.log("Debugging: newnext = ", next);
                 }
 
                 player.gameboard.receiveAttack(next);
@@ -284,7 +290,7 @@ const UI = (() => {
 
                     // Bounds check (edgecase: if horizontal must be in same y-axis) + not already attacked = cycle
                     while (player.gameboard.attacks.includes(next) || next < 0 || next > 99 
-                        || !Math.floor(next/10) == Math.floor(Math.min(...targetHits)/10)) {
+                        || !(Math.floor(next/10) == Math.floor(Math.min(...targetHits)/10))) {
                         next = WE[Math.floor(Math.random() * 2)];
                     }
 
@@ -298,8 +304,7 @@ const UI = (() => {
                     let next = NS[Math.floor(Math.random() * 2)];
 
                     // Bounds check + not already attacked = cycle
-                    while (player.gameboard.attacks.includes(next) || next < 0 || next > 99 
-                        || !Math.floor(next/10) == Math.floor(Math.min(...targetHits)/10)) {
+                    while (player.gameboard.attacks.includes(next) || next < 0 || next > 99) {
                         next = NS[Math.floor(Math.random() * 2)];
                     }
 
