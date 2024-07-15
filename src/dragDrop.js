@@ -5,6 +5,13 @@ import Ship from './ship'
 
 const DragDrop = (() => {
 
+    function init(player) {
+        reset();
+        setDraggableArea();
+        dragStart(player);
+        click(player);
+    }
+
     function click(player) {
         document.querySelectorAll(".gameboard.p > .player-ship").forEach((grid) => {
             grid.onclick = (e) => {
@@ -45,13 +52,6 @@ const DragDrop = (() => {
         });
     }
 
-    function init(player) {
-        reset();
-        setDraggableArea();
-        dragStart(player);
-        click(player);
-    }
-
     // reset all drag/click event listeners
     function reset() {
         document.querySelectorAll(".gameboard.p > .grid-unit").forEach((grid) => {
@@ -83,33 +83,6 @@ const DragDrop = (() => {
         playerShips.forEach((grid) => {
             grid.setAttribute("draggable", true);
             grid.style['cursor'] = 'pointer';
-        })
-    }
-
-    function dragStart(player) {
-        let playerShips = document.querySelectorAll(".gameboard.p > .player-ship");
-
-        playerShips.forEach((grid) => {
-            grid.ondragstart = (e) => {
-                // Dragging ship - need to extract Ship object from the grid
-                const classes = [...grid.classList];
-                let shipIdx = classes.find(value => {
-                    return value.startsWith("ship-");
-                });
-                shipIdx = shipIdx.slice(5)-1;
-                // Find class associated with ship + use as hashmap to reference exact ship object used in gameboard
-                const shipObj = player.gameboard.ships[shipIdx].ship;
-
-                // Style current dragged ship
-                player.gameboard.ships[shipIdx].coords.forEach((idx) => {
-                    document.getElementById(`p${idx}`).classList.add("dragging");
-                });
-
-                setDroppableArea(player, shipObj, shipObj.axis);
-
-                dragEnter(player, shipObj, shipObj.axis, shipIdx);
-                dragEnd(player);
-            }
         })
     }
 
@@ -167,6 +140,32 @@ const DragDrop = (() => {
             }
         })
     }
+
+    function dragStart(player) {
+        let playerShips = document.querySelectorAll(".gameboard.p > .player-ship");
+
+        playerShips.forEach((grid) => {
+            grid.ondragstart = (e) => {
+                // Dragging ship - need to extract Ship object from the grid
+                const classes = [...grid.classList];
+                let shipIdx = classes.find(value => {
+                    return value.startsWith("ship-");
+                });
+                shipIdx = shipIdx.slice(5)-1;
+                // Find class associated with ship + use as hashmap to reference exact ship object used in gameboard
+                const shipObj = player.gameboard.ships[shipIdx].ship;
+
+                // Style current dragged ship
+                player.gameboard.ships[shipIdx].coords.forEach((idx) => {
+                    document.getElementById(`p${idx}`).classList.add("dragging");
+                });
+
+                setDroppableArea(player, shipObj, shipObj.axis);
+                dragEnter(player, shipObj, shipObj.axis, shipIdx);
+                dragEnd(player);
+            }
+        })
+    }
     
     // Drag ship enters droppable area - offer preview of how ship would look placed
     function dragEnter(player, ship, axis, shipIdx) {
@@ -184,20 +183,20 @@ const DragDrop = (() => {
                 let head = parseInt(grid.id.slice(1));
                 if (axis == 0) {
                     // Horizontal case 
-                    let coords = [...new Array(ship.length).keys()].map((x) => x + head); // Potential coords array of horizontal ship from head
-                    coords.forEach((idx) => {
+                    let preview = [...new Array(ship.length).keys()].map((x) => x + head); // Potential coords array of horizontal ship from head
+                    preview.forEach((idx) => {
                         document.querySelector(`#p${idx}`).classList.add('grid-preview');
                     })
-                    dragDrop(player, ship, shipIdx, coords);
+                    dragDrop(player, ship, shipIdx, preview);
                 }
                 else if (axis == 1) {
                     // Vertical case
                     // Validation - head must have empty n length grids below within bounds
-                    let coords = [...new Array(ship.length).keys()].map((x) => head + (x * 10)); // Coords array of vertical from head
-                    coords.forEach((idx) => {
+                    let preview = [...new Array(ship.length).keys()].map((x) => head + (x * 10)); // Coords array of vertical from head
+                    preview.forEach((idx) => {
                         document.querySelector(`#p${idx}`).classList.add('grid-preview');
                     })
-                    dragDrop(player, ship, shipIdx, coords);
+                    dragDrop(player, ship, shipIdx, preview);
                 }
             }
         })
@@ -220,8 +219,7 @@ const DragDrop = (() => {
                     grid.classList.remove("dragging");
                 })
 
-
-                init(player); // At each drag-end reset draggable, droppable content and rerun
+                init(player); // At each drag-end reset draggable+droppable content and reset all listeners
             };
         })
     }
