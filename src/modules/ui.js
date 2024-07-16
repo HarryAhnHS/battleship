@@ -4,7 +4,15 @@ import DragDrop from "./dragDrop";
 import BattleshipAI from "./battleshipAI";
 import ScoreBoard from "./scoreboard";
 
+import Git from '../assets/github.png';
+import Fav from '../assets/favicon.png';
+
 const UI = (() => {
+    function setup() {
+        document.querySelector("#github").src = Git;
+        document.querySelector('#favicon').setAttribute('href', Fav);
+    }
+
     function displayGrids() {
         let gameboardP = document.querySelector(".gameboard.p");
         gameboardP.innerHTML = ""; // Clear existing
@@ -282,6 +290,7 @@ const UI = (() => {
     }
 
     return {
+        setup,
         displayGrids,
         initGame,
         updatePlacedShips

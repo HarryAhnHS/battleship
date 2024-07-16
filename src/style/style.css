@@ -102,6 +102,7 @@ body {
 
 .gameboard-label {
     margin: 10px;
+    text-decoration: underline;
 }
 
 /* Gameboard styling */
@@ -354,6 +355,10 @@ dialog::backdrop {
     .header {
         height: 200px;
         margin-bottom: 20px;
+    }
+    .gameboard {
+        width: 470px;
+        height: 470px;
     }
 }
 
