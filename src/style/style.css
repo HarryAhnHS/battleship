@@ -253,10 +253,10 @@ dialog::backdrop {
 }
 
 .result {
-    width: 50%;
-    height: 30vh;
+    width: 40%;
+    height: 40vh;
 
-    border: 3px solid black;
+    border: 1px solid black;
 }
 
 /* result modal flex to be run only when displayed */
@@ -271,6 +271,43 @@ dialog::backdrop {
 .result-text {
     margin-bottom: 30px;
     font-size: 42px;
+}
+
+#play-again {
+  background-color: #FFFFFF;
+  border: 1px solid #222222;
+  box-sizing: border-box;
+  color: #222222;
+  cursor: pointer;
+  display: inline-block;
+  font-family: 'Arsenal SC',-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
+  margin: 0;
+  outline: none;
+  padding: 13px 23px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  touch-action: manipulation;
+  transition: box-shadow .2s,-ms-transform .1s,-webkit-transform .1s,transform .1s;
+  user-select: none;
+  -webkit-user-select: none;
+  width: auto;
+}
+
+#play-again:active {
+  background-color: #F7F7F7;
+  border-color: #000000;
+  transform: scale(.96);
+}
+
+#play-again:disabled {
+  border-color: #DDDDDD;
+  color: #DDDDDD;
+  cursor: not-allowed;
+  opacity: 1;
 }
 
 .footer {

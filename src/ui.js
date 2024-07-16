@@ -349,26 +349,24 @@ const UI = (() => {
         });
     }
 
-    async function gameOver(winnerText, winner) {
+    // If gameover, pop modal and show winner until restart
+    async function gameOver(winnerText) {
         const dialog = document.querySelector(".result");
         const text = document.querySelector(".result-text");
         const restart = document.querySelector(".restart");
-        const gameboard = document.querySelector(".gameboard.c");
-
 
         // TODO - create game over styling transition in winning player grid
         document.querySelector(".gameboard.c").classList.add("locked");
         await delay(1000);
 
-
         dialog.showModal();
-        dialog.classList.add(".result-displayed");
+        dialog.classList.add("result-displayed");
         text.textContent = `${winnerText} wins!`
 
         restart.onclick = () => {
             // Restart game
             dialog.close();
-            dialog.classList.remove(".result-displayed");
+            dialog.classList.remove("result-displayed");
             initGame();
         }
     }
