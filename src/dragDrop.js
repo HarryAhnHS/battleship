@@ -120,9 +120,11 @@ const DragDrop = (() => {
                     document.getElementById(`p${idx}`).classList.add("dragging");
                 });
 
-                // Get grid position of current dragged ship
-                const shipOffset = [...player.gameboard.ships[shipIdx].coords].sort().findIndex(x => x == parseInt(grid.id.slice(1)));
+                // Get grid position of current dragged ship - Sort ship coords lowest to highest
 
+                const shipOffset = player.gameboard.ships[shipIdx].coords.sort((a,b) => a > b).findIndex(x => x == parseInt(grid.id.slice(1)));
+
+                console.log(shipCoords);
                 console.log(shipOffset);
 
                 setDroppableArea(player, shipObj, shipObj.axis, shipOffset);
