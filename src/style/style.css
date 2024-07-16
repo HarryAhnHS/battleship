@@ -348,6 +348,13 @@ dialog::backdrop {
 /* Media query */
 
 @media only screen and (max-width: 1000px) {
+    .gameboard {
+        width: 350px;
+        height: 350px;
+    }
+}
+
+@media only screen and (max-width: 800px) {
     .main {
         display: flex;
         flex-direction: column;
