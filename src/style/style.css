@@ -155,8 +155,8 @@ body {
 }
 
 .grid-found {
-    outline: rgb(24,169,93) solid 1px !important;
-    background-color: rgba(24,169,93, 0.3) !important;
+    outline: rgb(23,159,102) solid 1px !important;
+    background-color: rgba(23,159,102, 0.3) !important;
 }
 
 .grid-sunk {
@@ -190,21 +190,39 @@ body {
     background-color: rgba(119,170,255, 0.3);
 }
 
-/* Drag drop */
-/* .grid-droppable:not(.player-ship) {
-    outline: 3px solid blue;
-} */
-
-.ship-droppable:not(.player-ship) {
-    background-color: lightsalmon;
+/* Drag drop preview styling */
+.ship-droppable {
+    outline: gray solid 0.5px;
+    background-color: rgba(231,245,244,0.5);
 }
 
-.grid-preview {
-    background-color: blue !important;
+.preview-ship-1 {
+    outline: rgb(0,6,177) solid 1px !important;
+    background-color: rgba(0,6,177, 0.3) !important;
 }
 
-.grid-dragging {
-    filter: brightness(20%);
+.preview-ship-2 {
+    outline: rgb(0,89,179) solid 1px !important;
+    background-color: rgba(0,89,179, 0.3) !important;
+}
+
+.preview-ship-3 {
+    outline: rgb(51,102,255) solid 1px !important;
+    background-color: rgba(51,102,255, 0.3) !important;
+}
+
+.preview-ship-4 {
+    outline: rgb(85,136,255) solid 1px !important;
+    background-color: rgba(85,136,255, 0.3) !important;
+}
+
+.preview-ship-5 {
+    outline: rgb(119,170,255) solid 1px !important;
+    background-color: rgba(119,170,255, 0.3) !important;
+}
+
+.dragging { 
+
 }
 
 /* Wiggle effect */

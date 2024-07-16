@@ -141,7 +141,11 @@ const DragDrop = (() => {
                 e.preventDefault();
                 // Reset preview grids
                 document.querySelectorAll(".gameboard.p > .grid-unit").forEach((grid) => {
-                    grid.classList.remove('grid-preview');
+                    grid.classList.remove(`preview-ship-1`);
+                    grid.classList.remove(`preview-ship-2`);
+                    grid.classList.remove(`preview-ship-3`);
+                    grid.classList.remove(`preview-ship-4`);
+                    grid.classList.remove(`preview-ship-5`);
                 })
 
                 // Get head value 
@@ -150,7 +154,7 @@ const DragDrop = (() => {
                     const head = parseInt(grid.id.slice(1)) - shipOffset; // Update head value to be offsetted
                     let preview = [...new Array(ship.length).keys()].map((x) => x + head); // Potential coords array of horizontal ship from head
                     preview.forEach((idx) => {
-                        document.querySelector(`#p${idx}`).classList.add('grid-preview');
+                        document.querySelector(`#p${idx}`).classList.add(`preview-ship-${shipIdx+1}`);
                     })
                     dragDrop(player, ship, shipIdx, preview);
                 }
@@ -159,7 +163,7 @@ const DragDrop = (() => {
                     const head = parseInt(grid.id.slice(1)) - (10 * shipOffset); // Update head value to be offsetted
                     let preview = [...new Array(ship.length).keys()].map((x) => head + (x * 10)); // Coords array of vertical from head
                     preview.forEach((idx) => {
-                        document.querySelector(`#p${idx}`).classList.add('grid-preview');
+                        document.querySelector(`#p${idx}`).classList.add(`preview-ship-${shipIdx+1}`);
                     })
                     dragDrop(player, ship, shipIdx, preview);
                 }
@@ -178,7 +182,12 @@ const DragDrop = (() => {
                 // Reset droppable grids to have class "grid-droppable"
                 // Reset dragging class
                 document.querySelectorAll(".gameboard.p > .grid-unit").forEach((grid) => {
-                    grid.classList.remove('grid-preview');
+                    grid.classList.remove(`preview-ship-1`);
+                    grid.classList.remove(`preview-ship-2`);
+                    grid.classList.remove(`preview-ship-3`);
+                    grid.classList.remove(`preview-ship-4`);
+                    grid.classList.remove(`preview-ship-5`);
+                    
                     grid.classList.remove('grid-droppable');
                     grid.classList.remove('ship-droppable');
                     grid.classList.remove("dragging");
