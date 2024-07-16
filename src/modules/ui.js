@@ -38,6 +38,7 @@ const UI = (() => {
         document.querySelector("#start").style['display'] = 'flex'
         document.querySelector("#restart").style['display'] = 'none'
         document.querySelector(".header-helper").textContent = "Move/Rotate Ships";
+        document.querySelector(".header-desc").textContent = "Drag to Move and Click to Rotate";
 
         // Set display for player to move/rotate ships -> show player grid, lock computer grid
         document.querySelector(".gameboard.p").classList.remove("locked");
@@ -65,7 +66,9 @@ const UI = (() => {
             // DOM for battle
             document.querySelector("#start").style['display'] = 'none';
             document.querySelector("#restart").style['display'] = 'flex';
-            document.querySelector(".header-helper").textContent = "Begin the battle";
+            document.querySelector(".header-helper").textContent = "Let the battle begin!";
+            document.querySelector(".header-desc").textContent = "Keep an eye on the scoreboard";
+
             // Set display to Player Attack -> lock player grid, show computer grid for player attack
             document.querySelector(".gameboard.p").classList.add("locked");
             document.querySelector(".gameboard.c").classList.remove("locked");
