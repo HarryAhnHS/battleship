@@ -238,7 +238,11 @@ const UI = (() => {
         updateGrids(player, computer);
         updateShips(player, computer);
         ScoreBoard.updateScoreboard(player, computer);
-        if (computer.gameboard.isGameOver()) gameOver("Player", player);
+        if (computer.gameboard.isGameOver()) {
+            // TODO - create game over styling transition in winning player grid
+            document.querySelector(".gameboard.c").classList.add("locked");
+            gameOver("Player", player);
+        }
 
         // Computer Attack -> Update Grid Display -> Check if winner
         await delay(500);
@@ -247,7 +251,11 @@ const UI = (() => {
         updateGrids(player, computer);
         updateShips(player, computer);
         ScoreBoard.updateScoreboard(player, computer);
-        if (player.gameboard.isGameOver()) gameOver("Computer", computer);; //TODO - Handle game over
+        if (player.gameboard.isGameOver()) {
+            // TODO - create game over styling transition in winning player grid
+            document.querySelector(".gameboard.c").classList.add("locked");
+            gameOver("Computer", computer);
+        }; //TODO - Handle game over
 
         // Revert display to Player Attack -> lock player grid, show computer grid for player attack
         document.querySelector(".gameboard.p").classList.add("locked");
@@ -273,8 +281,6 @@ const UI = (() => {
         const text = document.querySelector(".result-text");
         const restart = document.querySelector("#play-again");
 
-        // TODO - create game over styling transition in winning player grid
-        document.querySelector(".gameboard.c").classList.add("locked");
         await delay(1000);
 
         dialog.showModal();
