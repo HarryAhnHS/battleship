@@ -6,79 +6,14 @@ import Ship from './ship'
 const DragDrop = (() => {
 
     function init(player) {
-        reset();
+        resetEvents();
         setDraggableArea();
-        dragStart(player);
+        drag(player);
         click(player);
     }
 
-    function click(player) {
-        document.querySelectorAll(".gameboard.p > .player-ship").forEach((grid) => {
-            grid.onclick = (e) => {
-                console.log("clicked");                
-                // extract shipIdx from grid
-                const classes = [...grid.classList];
-                let shipIdx = classes.find(value => {
-                    return value.startsWith("ship-");
-                });
-                shipIdx = shipIdx.slice(5)-1;
-                // Find class associated with ship + use as hashmap to reference exact ship object used in gameboard
-                const shipObj = player.gameboard.ships[shipIdx].ship;
-                const oldCoords = player.gameboard.ships[shipIdx].coords;
-                
-                const head = Math.min(...oldCoords);
-
-                // Attempt rotation
-                if (shipObj.axis == 0) {
-                    // Horizontal --> Vertical
-                    let newCoords = [...new Array(shipObj.length).keys()].map((x) => head + (x * 10)); // Coords array of vertical from head
-                    
-                    if (isDroppable(player, shipObj, newCoords)) {
-                        // Check if droppable - then rotate
-                        replaceShip(player, shipIdx, oldCoords, newCoords, 1);
-                        init(player);
-                    }
-                    else {
-                        shake(oldCoords);
-                    }
-                }
-                else if (shipObj.axis == 1) {
-                    // Vertical --> Horizontal
-                    let newCoords = [...new Array(shipObj.length).keys()].map((x) => x + head); // Coords array of horizontal ship from head
-                    if (newCoords.every((x) => Math.floor(x/10) == Math.floor(newCoords[0]/10))
-                        && isDroppable(player, shipObj, newCoords)) {
-                        replaceShip(player, shipIdx, oldCoords, newCoords, 0); 
-                        init(player);
-                    }
-                    else {
-                        shake(oldCoords);
-                    }
-                }    
-            }
-        });
-    }
-
-    // Helper function - animate coords using keyframes object
-    function shake(coords) {
-        console.log("shake");  
-        coords.forEach((idx) => {                
-            let grid = document.getElementById(`p${idx}`);
-            grid.animate([
-                {transform: "translate3d(-1px, 0, 0)"},
-                {transform: "translate3d(2px, 0, 0)"},
-                {transform: "translate3d(-4px, 0, 0)"},
-                {transform: "translate3d(4px, 0, 0)"},
-                {transform: "translate3d(-4px, 0, 0)"},
-                {transform: "translate3d(4px, 0, 0)"},
-                {transform: "translate3d(-4px, 0, 0)"},
-                {transform: "translate3d(2px, 0, 0)"},
-                {transform: "translate3d(-1px, 0, 0)"}
-            ], 500);
-        })
-    }
-
     // reset all drag/click event listeners
-    function reset() {
+    function resetEvents() {
         document.querySelectorAll(".gameboard.p > .grid-unit").forEach((grid) => {
             grid.ondragstart = ((e) => {
             }) 
@@ -166,7 +101,7 @@ const DragDrop = (() => {
         })
     }
 
-    function dragStart(player) {
+    function drag(player) {
         let playerShips = document.querySelectorAll(".gameboard.p > .player-ship");
 
         playerShips.forEach((grid) => {
@@ -267,6 +202,7 @@ const DragDrop = (() => {
             };
         })
     }
+
     function replaceShip(player, shipIdx, oldCoords, newCoords, newAxis) {
         // Storage changes
         // Update gameboard grids[]
@@ -286,8 +222,73 @@ const DragDrop = (() => {
         UI.updatePlacedShips(oldCoords, newCoords, shipIdx);
     }
 
+    function click(player) {
+        document.querySelectorAll(".gameboard.p > .player-ship").forEach((grid) => {
+            grid.onclick = (e) => {
+                console.log("clicked");                
+                // extract shipIdx from grid
+                const classes = [...grid.classList];
+                let shipIdx = classes.find(value => {
+                    return value.startsWith("ship-");
+                });
+                shipIdx = shipIdx.slice(5)-1;
+                // Find class associated with ship + use as hashmap to reference exact ship object used in gameboard
+                const shipObj = player.gameboard.ships[shipIdx].ship;
+                const oldCoords = player.gameboard.ships[shipIdx].coords;
+                
+                const head = Math.min(...oldCoords);
+
+                // Attempt rotation
+                if (shipObj.axis == 0) {
+                    // Horizontal --> Vertical
+                    let newCoords = [...new Array(shipObj.length).keys()].map((x) => head + (x * 10)); // Coords array of vertical from head
+                    
+                    if (isDroppable(player, shipObj, newCoords)) {
+                        // Check if droppable - then rotate
+                        replaceShip(player, shipIdx, oldCoords, newCoords, 1);
+                        init(player);
+                    }
+                    else {
+                        shake(oldCoords);
+                    }
+                }
+                else if (shipObj.axis == 1) {
+                    // Vertical --> Horizontal
+                    let newCoords = [...new Array(shipObj.length).keys()].map((x) => x + head); // Coords array of horizontal ship from head
+                    if (newCoords.every((x) => Math.floor(x/10) == Math.floor(newCoords[0]/10))
+                        && isDroppable(player, shipObj, newCoords)) {
+                        replaceShip(player, shipIdx, oldCoords, newCoords, 0); 
+                        init(player);
+                    }
+                    else {
+                        shake(oldCoords);
+                    }
+                }    
+            }
+        });
+    }
+
+    // Helper function - animate coords using keyframes object
+    function shake(coords) {
+        console.log("shake");  
+        coords.forEach((idx) => {                
+            let grid = document.getElementById(`p${idx}`);
+            grid.animate([
+                {transform: "translate3d(-1px, 0, 0)"},
+                {transform: "translate3d(2px, 0, 0)"},
+                {transform: "translate3d(-4px, 0, 0)"},
+                {transform: "translate3d(4px, 0, 0)"},
+                {transform: "translate3d(-4px, 0, 0)"},
+                {transform: "translate3d(4px, 0, 0)"},
+                {transform: "translate3d(-4px, 0, 0)"},
+                {transform: "translate3d(2px, 0, 0)"},
+                {transform: "translate3d(-1px, 0, 0)"}
+            ], 500);
+        })
+    }
+
     function terminate() {
-        reset();
+        resetEvents();
         // Reset draggable content
         document.querySelectorAll(".gameboard.p > .grid-unit").forEach((grid) => {
             grid.setAttribute("draggable", false);
