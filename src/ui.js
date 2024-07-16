@@ -13,8 +13,8 @@ const UI = (() => {
             gridUnit.classList.add('grid-unit');
             gridUnit.id = `p${i}`; // assign each an id from 0 to n*n-1
     
-            gridUnit.style.width = `10%`;
-            gridUnit.style.height = `10%`;
+            gridUnit.style.width = `calc(10% - 3px)`;
+            gridUnit.style.height = `calc(10% - 3px)`;
     
             gameboardP.appendChild(gridUnit);
         };
@@ -26,8 +26,8 @@ const UI = (() => {
             gridUnit.classList.add('grid-unit');
             gridUnit.id = `c${i}`; // assign each an id from 0 to n*n-1
     
-            gridUnit.style.width = `10%`;
-            gridUnit.style.height = `10%`;
+            gridUnit.style.width = `calc(10% - 3px)`;
+            gridUnit.style.height = `calc(10% - 3px)`;
     
             gameboardC.appendChild(gridUnit);
         };
@@ -39,6 +39,9 @@ const UI = (() => {
         document.querySelector("#start").style['display'] = 'flex'
         document.querySelector("#restart").style['display'] = 'none'
         document.querySelector(".header-helper").textContent = "Move/Rotate Ships";
+
+        // Set display for player to move/rotate ships -> show player grid, lock computer grid
+        document.querySelector(".gameboard.p").classList.remove("locked");
         document.querySelector(".gameboard.c").classList.add("locked");
 
         displayGrids();
@@ -56,7 +59,6 @@ const UI = (() => {
             document.querySelector("#start").style['display'] = 'none';
             document.querySelector("#restart").style['display'] = 'flex';
             document.querySelector(".header-helper").textContent = "Begin the battle";
-
             // Set display to Player Attack -> lock player grid, show computer grid for player attack
             document.querySelector(".gameboard.p").classList.add("locked");
             document.querySelector(".gameboard.c").classList.remove("locked");

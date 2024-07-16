@@ -52,10 +52,17 @@ body {
     width: 46%;
 
     display: flex;
+    flex-direction: column;
+
     align-items: center;
     justify-content: center;
 }
 
+.gameboard-label {
+    margin-bottom: 15px;
+}
+
+/* Gameboard styling */
 .gameboard {
     height: 420px;
     width: 420px;
@@ -66,24 +73,25 @@ body {
     flex-wrap: wrap;
 }
 
-.gameboard.c > .grid-unit:hover, 
-.gameboard.c > .grid-unit:focus {
-    cursor: pointer;
-}
-
-/* Locked gameboard */
 .gameboard.locked {
     opacity: 0.3;
     pointer-events: none;
 }
 
-.grid-hidden {
-    background-color: white !important;
+/* Grid-units styling - all states */
+.grid-unit {
+    outline: 0.5px solid gray;
+    box-sizing: border-box;
+    margin: 1.5px; /* coupled with UI.displayGrids()*/
 }
 
-.grid-unit {
-    outline: 0.5px solid lightgrey;
-    box-sizing: border-box;
+.gameboard.c > .grid-unit:hover, 
+.gameboard.c > .grid-unit:focus {
+    cursor: pointer;
+}
+
+.grid-hidden {
+    background-color: white !important;
 }
 
 .grid-found {
