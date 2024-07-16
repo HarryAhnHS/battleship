@@ -51,7 +51,7 @@ export default class Gameboard {
     getRemaining() {
         let remaining = [];
         for (let i = 0; i < 100; i++) {
-            if (this.grids[i] == null) remaining.push(i);
+            if (!this.attacks.includes(i)) remaining.push(i);
         }
         return remaining;
     }
