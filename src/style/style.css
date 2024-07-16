@@ -20,7 +20,7 @@ body {
     height: 130px;
     
     font-size: 42px;
-    margin-top: 5px;
+    margin-top: 15px;
 
     display: flex;
     flex-direction: column;
@@ -90,6 +90,8 @@ body {
 .player, .computer {
     height: 100%;
     width: 46%;
+
+    padding-bottom: 100px;
 
     display: flex;
     flex-direction: column;
@@ -217,6 +219,32 @@ body {
 
 /* Scoreboard Styling */
 
+.scoreboard-label {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.scoreboard {
+    display: flex;
+    justify-content: center;
+
+    gap: 10px;
+}
+
+.scoreboard > div {
+    display: flex;
+    gap: 1px;
+}
+
+.scoreboard > div.score-sunk {
+    display: none;
+}
+
+.box {
+    outline: 0px !important;
+    width: 15px;
+    height: 15px;
+}
 
 
 /* results modal styling */
