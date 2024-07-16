@@ -2,6 +2,7 @@ import Gameboard from "./gameboard";
 import Ship from "./ship";
 import Player from "./player";
 import DragDrop from "./dragDrop";
+import ScoreBoard from "./scoreboard";
 import { pl } from "date-fns/locale";
 
 const UI = (() => {
@@ -31,7 +32,6 @@ const UI = (() => {
     
             gameboardC.appendChild(gridUnit);
         };
-
     }
 
     function initGame() {
@@ -44,16 +44,24 @@ const UI = (() => {
         document.querySelector(".gameboard.p").classList.remove("locked");
         document.querySelector(".gameboard.c").classList.add("locked");
 
-        displayGrids();
         let player = new Player;
         let computer = new Player;
 
+        // Create DOM grids and display 
+        displayGrids();
+
+        // Place player + computer ships randomly
         placeRandomShips(player);
         placeRandomShips(computer);
-        // TODO - drag+drop select playerShipSelect(player)
         initDisplayShips(player,computer);
+
+        // Create DOM scoreboard
+        ScoreBoard.createScoreboard(player, computer);
+
+        // Allow player to move/rotate ship locations
         playerShipSelect(player);
 
+        // Start - Ships selected
         document.querySelector("#start").onclick = (e) => {
             // DOM for battle
             document.querySelector("#start").style['display'] = 'none';
@@ -219,6 +227,7 @@ const UI = (() => {
         playerAttack(computer, input);
         updateGrids(player, computer);
         updateShips(player, computer);
+        ScoreBoard.updateScoreboard(player, computer);
         if (computer.gameboard.isGameOver()) gameOver("Player", player);
 
         // Computer Attack -> Update Grid Display -> Check if winner
@@ -226,6 +235,7 @@ const UI = (() => {
         AIAttack(player);
         updateGrids(player, computer);
         updateShips(player, computer);
+        ScoreBoard.updateScoreboard(player, computer);
         if (player.gameboard.isGameOver()) gameOver("Computer", computer);; //TODO - Handle game over
 
         // Revert display to Player Attack -> lock player grid, show computer grid for player attack

@@ -215,6 +215,10 @@ body {
     background-color: rgba(231,245,244,0.6);
 }
 
+/* Scoreboard Styling */
+
+
+
 /* results modal styling */
 dialog::backdrop {
     opacity: 0.9;
