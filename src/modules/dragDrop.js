@@ -103,6 +103,8 @@ const DragDrop = (() => {
 
         playerShips.forEach((grid) => {
             grid.ondragstart = (e) => {
+                e.dataTransfer.effectAllowed = "move";
+
                 // Dragging ship - need to extract Ship object from the grid
                 const classes = [...grid.classList];
                 let shipIdx = classes.find(value => {
@@ -131,6 +133,7 @@ const DragDrop = (() => {
         droppable.forEach((grid) => {
             grid.ondragenter = (e) => {
                 e.preventDefault();
+                e.dataTransfer.dropEffect = "none";
                 // Reset preview grids
                 document.querySelectorAll(".gameboard.p > .grid-unit").forEach((grid) => {
                     grid.classList.remove(`preview-ship-1`);
