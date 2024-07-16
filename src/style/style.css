@@ -81,6 +81,9 @@ body {
 .main {
     flex: 1;
 
+    margin: auto;
+    width: 80%;
+
     display: flex;
 
     align-items: center;
@@ -115,7 +118,7 @@ body {
     display: flex;
     flex-wrap: wrap;
 
-    transition: all 0.1s;
+    transition: all 0.3s;
 }
 
 .locked,
@@ -349,10 +352,19 @@ dialog::backdrop {
 
 /* Media query */
 
+@media only screen and (max-width: 1300px) {
+    .main {
+        width: 100%;
+    }
+}
+
 @media only screen and (max-width: 1000px) {
     .gameboard {
         width: 350px;
         height: 350px;
+    }
+    .main {
+        width: 100%;
     }
 }
 
