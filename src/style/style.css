@@ -190,12 +190,7 @@ body {
     background-color: rgba(119,170,255, 0.3);
 }
 
-/* Drag drop preview styling */
-.ship-droppable {
-    outline: gray solid 0.5px;
-    background-color: rgba(231,245,244,0.5);
-}
-
+/* Drag drop preview styling for each ship*/
 .preview-ship-1 {
     outline: rgb(0,6,177) solid 1px !important;
     background-color: rgba(0,6,177, 0.3) !important;
@@ -221,8 +216,9 @@ body {
     background-color: rgba(119,170,255, 0.3) !important;
 }
 
-.dragging { 
-
+.ship-droppable {
+    outline: gray solid 0.5px;
+    background-color: rgba(231,245,244,0.5);
 }
 
 /* Wiggle effect */

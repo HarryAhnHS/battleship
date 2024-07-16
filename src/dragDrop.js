@@ -115,11 +115,6 @@ const DragDrop = (() => {
                 // Find class associated with ship + use as hashmap to reference exact ship object used in gameboard
                 const shipObj = player.gameboard.ships[shipIdx].ship;
 
-                // Style current dragged ship
-                player.gameboard.ships[shipIdx].coords.forEach((idx) => {
-                    document.getElementById(`p${idx}`).classList.add("dragging");
-                });
-
                 // Get grid position of current dragged ship - Sort ship coords lowest to highest
 
                 const shipOffset = player.gameboard.ships[shipIdx].coords.sort((a,b) => a > b).findIndex(x => x == parseInt(grid.id.slice(1)));
@@ -180,7 +175,6 @@ const DragDrop = (() => {
                 e.preventDefault();
                 // Reset preview grids
                 // Reset droppable grids to have class "grid-droppable"
-                // Reset dragging class
                 document.querySelectorAll(".gameboard.p > .grid-unit").forEach((grid) => {
                     grid.classList.remove(`preview-ship-1`);
                     grid.classList.remove(`preview-ship-2`);
@@ -190,7 +184,6 @@ const DragDrop = (() => {
                     
                     grid.classList.remove('grid-droppable');
                     grid.classList.remove('ship-droppable');
-                    grid.classList.remove("dragging");
                 })
 
                 init(player); // At each drag-end reset draggable+droppable content and reset all listeners
