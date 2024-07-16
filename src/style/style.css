@@ -17,7 +17,7 @@ body {
 
 /* Header */
 .header {
-    height: 130px;
+    height: 120px;
     
     font-size: 42px;
     margin-top: 15px;
@@ -59,7 +59,7 @@ body {
   -webkit-user-select: none;
   touch-action: manipulation;
 
-  margin-top: 15px;
+  margin-top: 25px;
 }
 
 .head-btn:focus {
@@ -89,9 +89,10 @@ body {
 
 .player, .computer {
     height: 100%;
-    width: 46%;
+    width: 44%;
 
-    padding-bottom: 100px;
+    padding-top: 5px;
+    padding-bottom: 75px;
 
     display: flex;
     flex-direction: column;
@@ -100,7 +101,7 @@ body {
 }
 
 .gameboard-label {
-    margin: 15px;
+    margin: 10px;
 }
 
 /* Gameboard styling */
@@ -341,4 +342,24 @@ dialog::backdrop {
 .github-a img:hover {
     opacity: 1;
     transform: rotate(360deg) scale(1.1);
+}
+
+/* Media query */
+
+@media only screen and (max-width: 1000px) {
+    .main {
+        display: flex;
+        flex-direction: column;
+    }
+    .header {
+        height: 200px;
+        margin-bottom: 20px;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .gameboard {
+        width: 350px;
+        height: 350px;
+    }
 }
