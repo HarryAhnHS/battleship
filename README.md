@@ -1,6 +1,8 @@
 # Battleship
 PvC Battleship game using TDD
 
+![Desktop Demo Gameplay](./src/assets/desktop-demo.png?raw=true)
+
 Link to live: https://harryahnhs.github.io/battleship/
 
 ## Main Functionalities: 
