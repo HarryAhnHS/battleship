@@ -231,7 +231,7 @@ const UI = (() => {
 
         // Computer Attack -> Update Grid Display -> Check if winner
         await delay(500);
-        
+
         BattleshipAI.AIAttack(player);
         updateGrids(player, computer);
         updateShips(player, computer);
@@ -260,7 +260,7 @@ const UI = (() => {
     async function gameOver(winnerText) {
         const dialog = document.querySelector(".result");
         const text = document.querySelector(".result-text");
-        const restart = document.querySelector(".restart");
+        const restart = document.querySelector("#play-agin");
 
         // TODO - create game over styling transition in winning player grid
         document.querySelector(".gameboard.c").classList.add("locked");

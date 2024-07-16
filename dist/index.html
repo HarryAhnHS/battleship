@@ -3,9 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Template</title>
+    <title>Battleship</title>
 <script defer src="main.js"></script></head>
+
+<dialog class="result">
+    <div class="result-text"></div>
+    <button id="play-again">Play Again</button>
+</dialog>
+
 <body>
+    <div class="header">
+        <div class="header-helper">Move/Rotate Ships</div>
+        <div class="header-desc">Drag to Move and Click to Rotate</div>
+        <button id="start" class="head-btn">Ready</button>
+        <button id="restart" class="head-btn">Restart</button>
+    </div>
+
+    <div class="main">
+        <div class="player">
+            <div class="gameboard-label">Player Board</div>
+            <div class="gameboard p"></div>
+
+            <div class="scoreboard-label">Remaining ships</div>
+            <div class="scoreboard p">
+                <div id="p-score-1"></div>
+                <div id="p-score-2"></div>
+                <div id="p-score-3"></div>
+                <div id="p-score-4"></div>
+                <div id="p-score-5"></div>
+            </div>
+        </div>
+        <div class="computer">
+            <div class="gameboard-label">Computer Board</div>
+            <div class="gameboard c"></div>
+
+            <div class="scoreboard-label">Remaining ships</div>
+            <div class="scoreboard c">
+                <div id="c-score-1"></div>
+                <div id="c-score-2"></div>
+                <div id="c-score-3"></div>
+                <div id="c-score-4"></div>
+                <div id="c-score-5"></div>
+            </div>
+            
+        </div>
+    </div>
+
     <div class="footer">
         &copy; Copyright by @HarryAhnHS 
         <a href="https://github.com/HarryAhnHS" class="github-a" target="_blank">

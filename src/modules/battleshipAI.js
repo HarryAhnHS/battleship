@@ -36,10 +36,39 @@ const BattleshipAI = (() => {
     
                 console.log(base)
                 console.log(next)
+
+                // Edge case handling - (assume worst case scenario)
+                // Check current smallest remaining ship
+                //  -> check if this ship can fit
+                let min = 5; // dummy to replace
+                const remainingShips = player.gameboard.ships.filter((shipObj) => {
+                    return !(shipObj.ship.isSunk);
+                })
+                remainingShips.forEach((shipObj) => {
+                    if (shipObj.ship.length <= min) min = shipObj.ship.length;
+                })
+                // Return true if ship fits from base / false if not
+                function checkIfFit(player, base, offset, shipLength) {
+                    let coords = [];
+                    for (let i = 1; i < shipLength; i++) {
+                        coords.push(base + (offset * i));
+                    }
+                    // Potenital coords based on base, offset, shipLength - exclude base (already attacked and valid)
+                    let isValid = true;
+                    coords.forEach((idx) => {
+                        if (player.gameboard.attacks.includes(idx) || idx < 0 || idx > 99 
+                        || ((offset == -1 || offset == 1) && !(Math.floor(idx/10) == Math.floor(base/10)))) {
+                            isValid = false;
+                        }
+                    });
+                    console.log("Step 2: (min)shipLength: " + shipLength + " can fit into " + base, coords + " = " + isValid);
+                    return isValid;
+                }
     
                 // Bounds check (edgecase: if horizontal must be in same y-axis) + not already attacked = cycle
                 while (player.gameboard.attacks.includes(next) || next < 0 || next > 99 
-                        || ((offset == -1 || offset == 1) && !(Math.floor(next/10) == Math.floor(base/10)))) {
+                        || ((offset == -1 || offset == 1) && !(Math.floor(next/10) == Math.floor(base/10)))
+                        || !checkIfFit(player, base, offset, min)) {
                     offset = NWSE[Math.floor(Math.random() * 4)];
                     next = base + offset;
                     console.log("Debugging: newnext = ", next);
@@ -89,8 +118,7 @@ const BattleshipAI = (() => {
         else {
             // 0. No hits to act upon - Complete random out of remaining grids
             const options = player.gameboard.getRemaining();
-            let next = Math.floor(Math.random() * options.length);
-            
+            let next = options[Math.floor(Math.random() * options.length)];
             console.log("Step 1 attacked cell: ", next);
             player.gameboard.receiveAttack(next);
             return;
