@@ -122,7 +122,7 @@ body {
 }
 
 .gameboard.locked {
-    opacity: 0.3;
+    opacity: 0.4;
     pointer-events: none;
 }
 
@@ -144,7 +144,8 @@ body {
 }
 
 .grid-missed {
-    outline: rgb(220,36,31) solid 1px;
+    font-size: 24px;
+    outline: rgb(220,36,31) solid 0.5px;
     background-color: rgba(220,36,31, 0.3);
 }
 
@@ -155,11 +156,13 @@ body {
 }
 
 .grid-found {
-    outline: rgb(23,159,102) solid 1px !important;
+    font-size: 12px;
+    outline: rgb(23,159,102) solid 0.5px !important;
     background-color: rgba(23,159,102, 0.3) !important;
 }
 
 .grid-sunk {
+    font-size: 12px;
     outline: gray solid 1px !important;
     background-color: rgb(0,0,0, 0.15) !important;
 }
@@ -218,26 +221,7 @@ body {
 
 .ship-droppable {
     outline: gray solid 0.5px;
-    background-color: rgba(231,245,244,0.5);
-}
-
-/* Wiggle effect */
-@keyframes shake {
-    10%, 90% {
-      transform: translate3d(-1px, 0, 0);
-    }
-  
-    20%, 80% {
-      transform: translate3d(2px, 0, 0);
-    }
-  
-    30%, 50%, 70% {
-      transform: translate3d(-4px, 0, 0);
-    }
-  
-    40%, 60% {
-      transform: translate3d(4px, 0, 0);
-    }
+    background-color: rgba(231,245,244,0.8);
 }
 
 /* results modal styling */

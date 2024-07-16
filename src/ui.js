@@ -155,9 +155,11 @@ const UI = (() => {
         playerAttacks.forEach((idx) => {
             if (player.gameboard.grids[idx]) {
                 document.querySelector(`#p${idx}`).classList.add("grid-found");
+                document.querySelector(`.gameboard.p > #p${idx}`).innerHTML = "&#10005;";
             }
             else {
                 document.querySelector(`#p${idx}`).classList.add("grid-missed");
+                document.querySelector(`.gameboard.p > #p${idx}`).innerHTML = "&#x2022;";
             }
         })
 
@@ -167,9 +169,11 @@ const UI = (() => {
             if (computer.gameboard.grids[idx]) {
                 document.querySelector(`#c${idx}`).classList.add("grid-found");
                 document.querySelector(`#c${idx}`).classList.remove("grid-hidden");
+                document.querySelector(`.gameboard.c > #c${idx}`).innerHTML = "&#10005;";
             }
             else {
                 document.querySelector(`#c${idx}`).classList.add("grid-missed");
+                document.querySelector(`.gameboard.c > #c${idx}`).innerHTML = "&#x2022;";
             }
         })
     }
@@ -180,7 +184,6 @@ const UI = (() => {
                 if (shipObj.ship.isSunk) {
                     document.querySelector(`.gameboard.p > #p${coord}`).classList.add("grid-sunk");
                     document.querySelector(`.gameboard.p > #p${coord}`).classList.remove("grid-found");
-                    document.querySelector(`.gameboard.p > #p${coord}`).innerHTML = "&#10005;";
                 }
             })
         })
@@ -190,7 +193,6 @@ const UI = (() => {
                     if (shipObj.ship.isSunk) {
                         document.querySelector(`.gameboard.c > #c${coord}`).classList.add("grid-sunk");
                         document.querySelector(`.gameboard.c > #c${coord}`).classList.remove("grid-found");
-                        document.querySelector(`.gameboard.c > #c${coord}`).innerHTML = "&#10005;";
                     }
                 })
             })
