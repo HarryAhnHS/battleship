@@ -6,10 +6,8 @@ img {
 }
 
 body {
-    height: calc(100vh + 100px);
     display: flex;
     flex-direction: column;
-
     margin: 0;
 
     font-family: "Arsenal SC", sans-serif;
@@ -19,9 +17,9 @@ body {
 
 /* Header */
 .header {
-    height: 120px;
+    height: 130px;
     
-    font-size: 32px;
+    font-size: 42px;
     margin-top: 5px;
 
     display: flex;
@@ -30,10 +28,10 @@ body {
     align-items: center;
 }
 
-.header-helper {
-    font-size: 32px;
+.header-desc {
+    font-size: 16px;
+    font-style: italic;
 }
-
 /* Start/restart button */
 /* CSS */
 .head-btn {
@@ -53,7 +51,7 @@ body {
   line-height: 24px;
   min-width: 140px;
   outline: 0;
-  padding: 5px 10px;
+  padding: 8px 10px;
   text-align: center;
   text-decoration: none;
   transition: all .3s;
@@ -80,12 +78,6 @@ body {
   fill: #06f;
 }
 
-@media (min-width: 768px) {
-  .head-btn {
-    min-width: 170px;
-  }
-}
-
 .main {
     flex: 1;
 
@@ -103,11 +95,10 @@ body {
     flex-direction: column;
 
     align-items: center;
-    justify-content: center;
 }
 
 .gameboard-label {
-    margin-bottom: 15px;
+    margin: 15px;
 }
 
 /* Gameboard styling */
@@ -121,7 +112,8 @@ body {
     flex-wrap: wrap;
 }
 
-.gameboard.locked {
+.locked,
+.gameboard-label:has(+ .locked) {
     opacity: 0.4;
     pointer-events: none;
 }
@@ -129,7 +121,7 @@ body {
 /* Grid-units styling - all states */
 /* Empty Grid - default */
 .grid-unit {
-    outline: gray solid 0.5px;
+    outline: rgb(92, 158, 173) solid 0.5px;
     box-sizing: border-box;
     margin: 1.5px; /* coupled with UI.displayGrids()*/
 
@@ -138,9 +130,8 @@ body {
     align-items: center;
 }
 
-.gameboard.c > .grid-unit:hover, 
-.gameboard.c > .grid-unit:focus {
-    cursor: pointer;
+.gameboard.c {
+    cursor: crosshair;
 }
 
 .grid-missed {
@@ -151,7 +142,7 @@ body {
 
 /* Priority State Styling -> Any 3 of these will not be mutually applied at any point*/
 .grid-hidden {
-    outline: gray solid 0.5px !important;
+    outline: rgb(92, 158, 173) solid 0.5px !important;
     background-color: white !important;    
 }
 
@@ -163,19 +154,19 @@ body {
 
 .grid-sunk {
     font-size: 12px;
-    outline: gray solid 1px !important;
-    background-color: rgb(0,0,0, 0.15) !important;
+    outline: rgb(92, 158, 173) solid 0.5px !important;
+    background-color: rgb(92, 158, 173, 0.1) !important;
 }
 
 /* Grid-ship individual styling*/
 .ship-1 {
-    outline: rgb(0,6,177) solid 1px;
-    background-color: rgba(0,6,177, 0.3);
+    outline: rgb(0,20,255) solid 1px;
+    background-color: rgba(0,20,255, 0.3);
 }
 
 .ship-2 {
-    outline: rgb(0,89,179) solid 1px;
-    background-color: rgba(0,89,179, 0.3);
+    outline: rgb(20,50,255) solid 1px;
+    background-color: rgba(20,50,255, 0.3);
 }
 
 .ship-3 {
@@ -195,13 +186,13 @@ body {
 
 /* Drag drop preview styling for each ship*/
 .preview-ship-1 {
-    outline: rgb(0,6,177) solid 1px !important;
-    background-color: rgba(0,6,177, 0.3) !important;
+    outline: rgb(0,20,255) solid 1px !important;
+    background-color: rgba(0,20,255, 0.3) !important;
 }
 
 .preview-ship-2 {
-    outline: rgb(0,89,179) solid 1px !important;
-    background-color: rgba(0,89,179, 0.3) !important;
+    outline: rgb(20,50,255) solid 1px !important;
+    background-color: rgba(20,50,255, 0.3) !important;
 }
 
 .preview-ship-3 {
@@ -220,8 +211,8 @@ body {
 }
 
 .ship-droppable {
-    outline: gray solid 0.5px;
-    background-color: rgba(231,245,244,0.8);
+    outline: rgb(92, 158, 173) solid 0.5px;
+    background-color: rgba(231,245,244,0.6);
 }
 
 /* results modal styling */
@@ -251,7 +242,7 @@ dialog::backdrop {
 }
 
 .footer {
-    font-family: 'Urbanist', sans-serif;
+    font-family: "Arsenal SC", sans-serif;
 
     background-color: white;
     color: black;
@@ -261,7 +252,7 @@ dialog::backdrop {
     justify-content: center;
     align-items: center;
 
-    font-size: 12px;
+    font-size: 16px;
 }
 
 .github-logo {
