@@ -1,9 +1,7 @@
-import Gameboard from "./gameboard";
-import Ship from "./ship";
-import Player from "./player";
-import DragDrop from "./modules/dragDrop";
-import ScoreBoard from "./modules/scoreboard";
-import { pl } from "date-fns/locale";
+import Ship from "../factories/ship";
+import Player from "../factories/player";
+import DragDrop from "./dragDrop";
+import ScoreBoard from "./scoreboard";
 
 const UI = (() => {
     function displayGrids() {

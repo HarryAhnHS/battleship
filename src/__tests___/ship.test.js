@@ -1,4 +1,4 @@
-import Ship from '../ship';
+import Ship from '../factories/ship';
 
 let a;
 beforeEach(() => {

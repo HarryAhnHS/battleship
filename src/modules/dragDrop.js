@@ -1,7 +1,4 @@
 import UI from './ui'
-import Player from './player'
-import Gameboard from './gameboard'
-import Ship from './ship'
 
 const DragDrop = (() => {
 

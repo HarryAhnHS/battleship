@@ -1,5 +1,5 @@
-import Ship from '../ship';
-import Gameboard from '../gameboard';
+import Ship from '../factories/ship';
+import Gameboard from '../factories/gameboard';
 
 let gb;
 let vessel;
