@@ -1,6 +1,10 @@
 const ScoreBoard = (() => {
     function createScoreboard(player, computer) {
         console.log("creating")
+        document.querySelectorAll(".scoreboard > div").forEach((score) => {
+            score.innerHTML = "";
+            score.classList.remove("score-sunk");
+        })
         document.querySelectorAll(".scoreboard").forEach((scoreboard) => {
             if (scoreboard.classList.contains('p')) {
                 // Player's scoreboard
