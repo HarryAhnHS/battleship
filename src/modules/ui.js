@@ -37,7 +37,7 @@ const UI = (() => {
         // DOM for prep stage
         document.querySelector("#start").style['display'] = 'flex'
         document.querySelector("#restart").style['display'] = 'none'
-        document.querySelector(".header-helper").textContent = "Move/Rotate Ships";
+        document.querySelector(".header-helper").textContent = "Assemble the fleet";
         document.querySelector(".header-desc").textContent = "Drag to Move and Click to Rotate";
 
         // Set display for player to move/rotate ships -> show player grid, lock computer grid
