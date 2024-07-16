@@ -38,8 +38,8 @@ const UI = (() => {
         // DOM for prep stage
         document.querySelector("#start").style['display'] = 'flex'
         document.querySelector("#restart").style['display'] = 'none'
-        document.querySelector(".header-helper").textContent = "Assemble your fleet";
-        document.querySelector(".gameboard.c").style['pointer-events'] = "none";
+        document.querySelector(".header-helper").textContent = "Move/Rotate Ships";
+        document.querySelector(".gameboard.c").classList.add("locked");
 
         displayGrids();
         let player = new Player;
@@ -56,7 +56,10 @@ const UI = (() => {
             document.querySelector("#start").style['display'] = 'none';
             document.querySelector("#restart").style['display'] = 'flex';
             document.querySelector(".header-helper").textContent = "Begin the battle";
-            document.querySelector(".gameboard.c").style['pointer-events'] = "auto";
+
+            // Set display to Player Attack -> lock player grid, show computer grid for player attack
+            document.querySelector(".gameboard.p").classList.add("locked");
+            document.querySelector(".gameboard.c").classList.remove("locked");
 
             DragDrop.terminate(); // Terminate grid events
             gameLogic(player, computer);  
@@ -204,26 +207,26 @@ const UI = (() => {
     }
 
     async function playRound(player, computer, input) {
-        // Player turn
-        // Update Grid Display
-        // Check if winner
-        // Computer Attack Random move
-        // Update Grid Display
-        // Check if winner
+        // ATP got input -> show player grid for AI attack, lock computer grid
+        document.querySelector(".gameboard.p").classList.remove("locked");
+        document.querySelector(".gameboard.c").classList.add("locked");
+
+        // Handle player's input -> Update Grid Display -> Check if winner
         playerAttack(computer, input);
         updateGrids(player, computer);
         updateShips(player, computer);
         if (computer.gameboard.isGameOver()) gameOver("Player", player);
 
-        // Delay when AI picks
-        document.querySelector(".gameboard.c").style['pointer-events'] = "none";
+        // Computer Attack -> Update Grid Display -> Check if winner
         await delay(500);
-        document.querySelector(".gameboard.c").style['pointer-events'] = "auto";
-
         AIAttack(player);
         updateGrids(player, computer);
         updateShips(player, computer);
         if (player.gameboard.isGameOver()) gameOver("Computer", computer);; //TODO - Handle game over
+
+        // Revert display to Player Attack -> lock player grid, show computer grid for player attack
+        document.querySelector(".gameboard.p").classList.add("locked");
+        document.querySelector(".gameboard.c").classList.remove("locked");
     }
 
     function playerAttack(computer, input) {
@@ -340,7 +343,7 @@ const UI = (() => {
 
 
         // TODO - create game over styling transition in winning player grid
-        gameboard.style['pointer-events'] = 'none'; //Disable gameboard interface while awaiting
+        document.querySelector(".gameboard.c").classList.add("locked");
         await delay(1000);
 
 
@@ -353,7 +356,6 @@ const UI = (() => {
             dialog.close();
             dialog.classList.remove(".result-displayed");
             initGame();
-            gameboard.style['pointer-events'] = 'auto'; //Enable gameboard interface
         }
     }
 

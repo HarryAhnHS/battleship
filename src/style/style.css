@@ -1,5 +1,5 @@
 /* Font */
-@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Arsenal+SC:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 img {
     max-width: 100%;
@@ -11,6 +11,10 @@ body {
     flex-direction: column;
 
     margin: 0;
+
+    font-family: "Arsenal SC", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .header {
@@ -30,7 +34,7 @@ body {
 }
 
 .header-helper {
-    font-size: 16px;
+    font-size: 32px;
 }
 
 
@@ -46,7 +50,6 @@ body {
 .player, .computer {
     height: 100%;
     width: 46%;
-    outline: 1px solid black;
 
     display: flex;
     align-items: center;
@@ -66,6 +69,12 @@ body {
 .gameboard.c > .grid-unit:hover, 
 .gameboard.c > .grid-unit:focus {
     cursor: pointer;
+}
+
+/* Locked gameboard */
+.gameboard.locked {
+    opacity: 0.3;
+    pointer-events: none;
 }
 
 .grid-hidden {
