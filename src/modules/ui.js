@@ -271,7 +271,7 @@ const UI = (() => {
     async function gameOver(winnerText) {
         const dialog = document.querySelector(".result");
         const text = document.querySelector(".result-text");
-        const restart = document.querySelector("#play-agin");
+        const restart = document.querySelector("#play-again");
 
         // TODO - create game over styling transition in winning player grid
         document.querySelector(".gameboard.c").classList.add("locked");
