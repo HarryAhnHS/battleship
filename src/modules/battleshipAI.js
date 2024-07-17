@@ -54,11 +54,8 @@ const BattleshipAI = (() => {
                     for (let i = (-1 * shipLength) + 1; i < shipLength; i++) {
                         coords.push(base + (offset * i));
                     }
-
                     console.log("Check: " + coords);
-
                     // While looping through coords, 'shipLength' coords in a row must be valid to return true
-
                     // Potenital coords based on base, offset, shipLength - exclude base (already attacked and valid)
                     let consecutive = 0;
                     for (const idx of coords) {
