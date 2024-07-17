@@ -39,7 +39,6 @@ const BattleshipAI = (() => {
                 target = shipObj;
             }
         })
-        console.log("Target = ", target);
         return target;
     }
 
@@ -48,7 +47,6 @@ const BattleshipAI = (() => {
         let targetHits = hitsNotSunk.filter((hit) => {
             return player.gameboard.grids[hit] == target.ship && target.coords.includes(hit);
         });
-        console.log("Target's already hit coords = ", targetHits);
 
         return targetHits;
     }
@@ -58,9 +56,6 @@ const BattleshipAI = (() => {
         const base = targetHits[0];
         let offset = NWSE[Math.floor(Math.random() * 4)];
         let next = base + offset;
-
-        console.log(base)
-        console.log(next)
 
         // Edge case handling - (assume worst case scenario)
         // Check current smallest remaining ship
@@ -79,11 +74,9 @@ const BattleshipAI = (() => {
                 || !checkIfFit(player, base, offset, min)) {
             offset = NWSE[Math.floor(Math.random() * 4)];
             next = base + offset;
-            console.log("Debugging: newnext = ", next);
         }
 
         player.gameboard.receiveAttack(next);
-        console.log("Step 2 attacked cell: ", next);
     }
 
     // Return true if ship fits at base / false if not
@@ -93,41 +86,33 @@ const BattleshipAI = (() => {
         for (let i = (-1 * shipLength) + 1; i < shipLength; i++) {
             coords.push(base + (offset * i));
         }
-        console.log("Check: " + coords);
         // While looping through coords, 'shipLength' coords in a row must be valid to return true
         // Potenital coords based on base, offset, shipLength - exclude base (already attacked and valid)
         let consecutive = 0;
         for (const idx of coords) {
-            console.log("testing " + idx);
             if (idx != base) {
                 // Coord is not base
                 if (player.gameboard.attacks.includes(idx) || idx < 0 || idx > 99 
                     || ((offset == -1 || offset == 1) && !(Math.floor(idx/10) == Math.floor(base/10)))) {    
                         // If coord is not base and invalid, then reset consecutive count
                         consecutive = 0;
-                        console.log("consecutiveReset = " + consecutive);
                 }
                 else {
                     // Valid - add to consecutive and check if can fit
                     consecutive += 1;
-                    console.log("Valid -> consecutive++ = " + consecutive);
                 }
             } 
             else {
                 // If current idx is base - skip over and add 1 to consecutive count
                 consecutive++;
-                console.log("baseCase = " + consecutive);
             }
 
             // At each iteration - check if consecutive 'shipLength' coords in a row are valid to return true
-            console.log("comparing:" + consecutive + "with ship length:" + shipLength);
             if (consecutive == shipLength) {
-                console.log("True");
                 return true; 
             }
         }
             
-        console.log("Step 2: ship of length " + shipLength + " can fit into " + base, coords + "?" + consecutive);
         return false; // Otherwise, no match
     }
 
@@ -155,7 +140,6 @@ const BattleshipAI = (() => {
         }
 
         player.gameboard.receiveAttack(next);
-        console.log("Step 3 attacked cell: ", next);
     }
 
     function handleVerticalHits(player, targetHits) {
@@ -168,7 +152,6 @@ const BattleshipAI = (() => {
         }
 
         player.gameboard.receiveAttack(next);
-        console.log("Step 3 attacked cell: ", next);
     }
 
     function randomAttack(player) {

@@ -107,7 +107,6 @@ const UI = (() => {
             while (!coords.every((x) => Math.floor(x/10) == Math.floor(coords[0]/10))) {
                 let pos = Math.floor(Math.random() * 100);
                 coords = coords.map((x) => x + pos);
-                console.log("Horizontal zigzag - Cycling")
             }
         }
         else if (axis == 1) {
@@ -125,12 +124,10 @@ const UI = (() => {
             // Error check cycle until valid - then place
             while (!player.gameboard.isValidPlacement(ship, coords.array)) {
                 coords = randomCoordinates(ship);
-                console.log("Invalid randomization - Cycling")
             }
             player.gameboard.placeShip(ship, coords.array);
             ship.setAxis(coords.axis);
         })
-        console.log(player);
     }
 
     function initDisplayShips(player, computer) {
