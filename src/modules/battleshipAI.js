@@ -47,22 +47,52 @@ const BattleshipAI = (() => {
                 remainingShips.forEach((shipObj) => {
                     if (shipObj.ship.length <= min) min = shipObj.ship.length;
                 })
-                // Return true if ship fits from base / false if not
+                // Return true if ship fits at base / false if not
                 function checkIfFit(player, base, offset, shipLength) {
                     let coords = [];
-                    for (let i = 1; i < shipLength; i++) {
+                    // Coords to store all potential coords from base of shipLength in offset direction
+                    for (let i = (-1 * shipLength) + 1; i < shipLength; i++) {
                         coords.push(base + (offset * i));
                     }
+
+                    console.log("Check: " + coords);
+
+                    // While looping through coords, 'shipLength' coords in a row must be valid to return true
+
                     // Potenital coords based on base, offset, shipLength - exclude base (already attacked and valid)
-                    let isValid = true;
-                    coords.forEach((idx) => {
-                        if (player.gameboard.attacks.includes(idx) || idx < 0 || idx > 99 
-                        || ((offset == -1 || offset == 1) && !(Math.floor(idx/10) == Math.floor(base/10)))) {
-                            isValid = false;
+                    let consecutive = 0;
+                    for (const idx of coords) {
+                        console.log("testing " + idx);
+                        if (idx != base) {
+                            // Coord is not base
+                            if (player.gameboard.attacks.includes(idx) || idx < 0 || idx > 99 
+                                || ((offset == -1 || offset == 1) && !(Math.floor(idx/10) == Math.floor(base/10)))) {    
+                                    // If coord is not base and invalid, then reset consecutive count
+                                    consecutive = 0;
+                                    console.log("consecutiveReset = " + consecutive);
+                            }
+                            else {
+                                // Valid - add to consecutive and check if can fit
+                                consecutive += 1;
+                                console.log("Valid -> consecutive++ = " + consecutive);
+                            }
+                        } 
+                        else {
+                            // If current idx is base - skip over and add 1 to consecutive count
+                            consecutive++;
+                            console.log("baseCase = " + consecutive);
                         }
-                    });
-                    console.log("Step 2: (min)shipLength: " + shipLength + " can fit into " + base, coords + " = " + isValid);
-                    return isValid;
+
+                        // At each iteration - check if consecutive 'shipLength' coords in a row are valid to return true
+                        console.log("comparing:" + consecutive + "with ship length:" + shipLength);
+                        if (consecutive == shipLength) {
+                            console.log("True");
+                            return true; 
+                        }
+                    }
+                        
+                    console.log("Step 2: ship of length " + shipLength + " can fit into " + base, coords + "?" + consecutive);
+                    return false; // Otherwise, no match
                 }
     
                 // Bounds check (edgecase: if horizontal must be in same y-axis) + not already attacked = cycle
